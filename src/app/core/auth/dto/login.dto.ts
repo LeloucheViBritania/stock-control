@@ -3,15 +3,17 @@
  * Cette interface représente la charge utile (payload)
  * envoyée par le formulaire de connexion au serveur NestJS.
  * Elle correspond au LoginDto du backend.
+ *
+ * IMPORTANT: Le backend attend nomUtilisateur (pas email) et motDePasse (pas password)
  */
 export interface LoginDto {
   /**
-   * L'adresse email de l'utilisateur.
+   * Le nom d'utilisateur (unique dans le système)
    */
-  email: string;
+  nomUtilisateur: string;
 
   /**
-   * Le mot de passe de l'utilisateur.
+   * Le mot de passe de l'utilisateur
    */
-  password: string;
+  motDePasse: string;
 }

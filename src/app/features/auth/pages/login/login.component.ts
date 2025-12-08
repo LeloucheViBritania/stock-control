@@ -6,10 +6,12 @@ import { LoginDto } from '../../../../core/auth/dto/login.dto';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  standalone: false
 })
 export class LoginComponent implements OnInit {
-  loginForm?: FormGroup;
+  loginForm!: FormGroup;
   loading = false;
   error = '';
   returnUrl?: string;
@@ -23,8 +25,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      nomUtilisateur: ['', [Validators.required, Validators.minLength(3)]],
+      motDePasse: ['', [Validators.required, Validators.minLength(6)]]
     });
 
     // Récupérer l'URL de retour si on a été redirigé
@@ -32,15 +34,15 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.loginForm?.invalid) return;
+    if (this.loginForm.invalid) return;
 
     this.loading = true;
-    this.authService.login(this.loginForm?.value as LoginDto).subscribe({
+    this.authService.login(this.loginForm.value as LoginDto).subscribe({
       next: () => {
         this.router.navigate([this.returnUrl]);
       },
       error: (err) => {
-        this.error = "Email ou mot de passe incorrect";
+        this.error = err.error?.message || "Nom d'utilisateur ou mot de passe incorrect";
         this.loading = false;
       }
     });

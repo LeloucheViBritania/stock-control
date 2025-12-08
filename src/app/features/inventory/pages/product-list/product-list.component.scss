@@ -1,0 +1,166 @@
+// Product List Component Styles
+
+.container-fluid {
+  padding: 1.5rem;
+}
+
+// Header Section
+.d-flex.justify-content-between {
+  margin-bottom: 1.5rem;
+
+  h2 {
+    margin: 0;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+    }
+  }
+}
+
+// Card & Table
+.card {
+  border: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+
+  .card-body {
+    padding: 0;
+  }
+
+  .table {
+    margin-bottom: 0;
+
+    thead {
+      background-color: #f8f9fa;
+
+      th {
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #495057;
+        padding: 1rem;
+        border-bottom: 2px solid #dee2e6;
+      }
+    }
+
+    tbody {
+      tr {
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: #f8f9fa;
+          transform: scale(1.01);
+        }
+
+        td {
+          padding: 1rem;
+          vertical-align: middle;
+          border-bottom: 1px solid #e9ecef;
+
+          strong {
+            color: #495057;
+            font-weight: 600;
+          }
+
+          small.text-muted {
+            font-size: 0.8rem;
+            color: #6c757d;
+          }
+
+          // Stock Badge
+          .badge {
+            padding: 0.35em 0.65em;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 0.25rem;
+
+            &.bg-success {
+              background-color: #28a745 !important;
+            }
+
+            &.bg-danger {
+              background-color: #dc3545 !important;
+            }
+          }
+
+          // Action Buttons
+          .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.25rem;
+            transition: all 0.2s ease;
+
+            &.btn-outline-secondary {
+              &:hover {
+                background-color: #6c757d;
+                color: #fff;
+                transform: scale(1.05);
+              }
+            }
+
+            &.btn-outline-danger {
+              &:hover {
+                background-color: #dc3545;
+                color: #fff;
+                transform: scale(1.05);
+              }
+            }
+          }
+        }
+
+        // Empty State
+        &:has(td[colspan]) {
+          td {
+            padding: 2rem;
+            text-align: center;
+            color: #6c757d;
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 1rem;
+  }
+
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 1rem;
+
+    .btn-primary {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  .table {
+    font-size: 0.85rem;
+
+    thead th {
+      padding: 0.75rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    tbody td {
+      padding: 0.75rem 0.5rem;
+    }
+  }
+}

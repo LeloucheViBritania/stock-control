@@ -10,9 +10,11 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-purchase-order-create',
   templateUrl: './purchase-order-create.component.html'
+,
+  standalone: false
 })
 export class PurchaseOrderCreateComponent implements OnInit {
-  orderForm?: FormGroup;
+  orderForm!: FormGroup;
   suppliers: Fournisseur[] = [];
   warehouses: Entrepot[] = [];
   products: Produit[] = [];
@@ -59,7 +61,7 @@ export class PurchaseOrderCreateComponent implements OnInit {
 
   // Getter pour accéder facilement au FormArray dans le template
   get lignes(): FormArray {
-    return this.orderForm?.get('lignes') as FormArray;
+    return this.orderForm.get('lignes') as FormArray;
   }
 
   addProductLine(): void {
@@ -75,6 +77,11 @@ export class PurchaseOrderCreateComponent implements OnInit {
     this.lignes.removeAt(index);
   }
 
+  // Alias pour le template qui utilise removeLine
+  removeLine(index: number): void {
+    this.removeProductLine(index);
+  }
+
   // Fonction utilitaire pour le calcul du total HT dans le template
   calculateTotal(): number {
     return this.lignes.controls.reduce((total, control) => {
@@ -85,12 +92,12 @@ export class PurchaseOrderCreateComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.orderForm?.invalid) {
+    if (this.orderForm.invalid) {
         alert('Veuillez corriger les erreurs dans le formulaire, notamment ajouter au moins un produit.');
         return;
     }
 
-    this.purchaseService.createOrder(this.orderForm?.value).subscribe({
+    this.purchaseService.createOrder(this.orderForm.value).subscribe({
       next: (res) => {
         alert(`Bon de commande ${res.numeroCommande} créé avec succès.`);
         this.router.navigate(['/purchases/orders']); // Rediriger vers la liste des commandes

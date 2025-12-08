@@ -7,10 +7,45 @@ export interface DashboardStats {
   totalProduits: number;
   alerteStock: number;
   commandesEnAttente: number;
+  totalVentes: number;
+  totalClients: number;
+  totalFournisseurs: number;
   // Champs Premium potentiels
   valeurStock?: number;
   chiffreAffaires?: number;
-  topProduits?: { nom: string; vendu: number }[];
+  topProduits?: TopProduct[];
+  recentInvoices?: Invoice[];
+  expenseData?: ExpenseData[];
+  todoList?: TodoItem[];
+}
+
+export interface TopProduct {
+  code: string;
+  nom: string;
+  quantite: number;
+  montant: number;
+}
+
+export interface Invoice {
+  numero: number;
+  client: string;
+  date: string;
+  montant: number;
+  statut: 'paid' | 'due';
+}
+
+export interface ExpenseData {
+  month: string;
+  expense: number;
+  earning: number;
+}
+
+export interface TodoItem {
+  id: number;
+  date: string;
+  title: string;
+  icon: string;
+  color: string;
 }
 
 @Injectable({

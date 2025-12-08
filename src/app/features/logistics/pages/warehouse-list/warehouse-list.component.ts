@@ -37,7 +37,8 @@ import { Entrepot } from '../../../../../shared/models/logistics.model';
   styles: [`
     .warehouse-card { transition: transform 0.2s; }
     .warehouse-card:hover { transform: translateY(-5px); shadow: 0 4px 8px rgba(0,0,0,0.1); }
-  `]
+  `],
+  standalone: false
 })
 export class WarehouseListComponent implements OnInit {
   warehouses: Entrepot[] = [];

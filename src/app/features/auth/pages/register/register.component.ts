@@ -6,9 +6,11 @@ import { AuthService } from '../../../../core/auth/auth.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html'
+,
+  standalone: false
 })
 export class RegisterComponent implements OnInit {
-  registerForm?: FormGroup;
+  registerForm!: FormGroup;
   loading = false;
   error = '';
 
@@ -27,12 +29,12 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.registerForm?.invalid) return;
+    if (this.registerForm.invalid) return;
 
     this.loading = true;
     // Note : Assurez-vous que votre AuthService a une méthode register()
     // Si elle n'existe pas, il faudra l'ajouter (voir note plus bas)
-    this.authService.register(this.registerForm?.value).subscribe({
+    this.authService.register(this.registerForm.value).subscribe({
       next: () => {
         // Redirection vers le login après succès
         this.router.navigate(['/auth/login'], { queryParams: { registered: true } });

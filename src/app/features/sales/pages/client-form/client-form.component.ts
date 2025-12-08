@@ -6,9 +6,11 @@ import { SalesService } from '../../../../core/services/sales.service';
 @Component({
   selector: 'app-client-form',
   templateUrl: './client-form.component.html'
+,
+  standalone: false
 })
 export class ClientFormComponent implements OnInit {
-  form?: FormGroup;
+  form!: FormGroup;
   isEdit = false;
   id: number= 0;
 
@@ -35,17 +37,17 @@ export class ClientFormComponent implements OnInit {
 
     if (this.isEdit) {
       this.salesService.getClient(this.id).subscribe(data => {
-        this.form?.patchValue(data);
+        this.form.patchValue(data);
       });
     }
   }
 
   onSubmit(): void {
-    if (this.form?.invalid) return;
+    if (this.form.invalid) return;
 
     const req = this.isEdit
-      ? this.salesService.updateClient(this.id, this.form?.value)
-      : this.salesService.createClient(this.form?.value);
+      ? this.salesService.updateClient(this.id, this.form.value)
+      : this.salesService.createClient(this.form.value);
 
     req.subscribe({
       next: () => this.router.navigate(['/sales/clients']),

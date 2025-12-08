@@ -1,29 +1,77 @@
-<div class="text-center mb-4">
-  <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
-  <p class="text-muted">Accédez à votre espace de gestion</p>
-</div>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="logo">SC</div>
+      <h1>Connexion</h1>
+      <p>Accédez à votre espace de gestion de stocks</p>
+    </div>
 
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div *ngIf="error" class="alert">{{ error }}</div>
 
-  <div class="mb-3">
-    <label class="form-label">Email</label>
-    <input type="email" formControlName="email" class="form-control" placeholder="nom@exemple.com">
-    <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger small">
-      Email valide requis
+      <div class="form-group">
+        <label for="nomUtilisateur">Nom d'utilisateur</label>
+        <input
+          id="nomUtilisateur"
+          type="text"
+          formControlName="nomUtilisateur"
+          placeholder="Entrez votre nom d'utilisateur"
+          [class.is-invalid]="loginForm.get('nomUtilisateur')?.invalid && loginForm.get('nomUtilisateur')?.touched"
+        >
+        <div
+          *ngIf="loginForm.get('nomUtilisateur')?.invalid && loginForm.get('nomUtilisateur')?.touched"
+          class="error-message"
+        >
+          Nom d'utilisateur requis (min. 3 caractères)
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="motDePasse">Mot de passe</label>
+        <input
+          id="motDePasse"
+          type="password"
+          formControlName="motDePasse"
+          placeholder="Entrez votre mot de passe"
+          [class.is-invalid]="loginForm.get('motDePasse')?.invalid && loginForm.get('motDePasse')?.touched"
+        >
+        <div
+          *ngIf="loginForm.get('motDePasse')?.invalid && loginForm.get('motDePasse')?.touched"
+          class="error-message"
+        >
+          Mot de passe requis (min. 6 caractères)
+        </div>
+      </div>
+
+      <button
+        class="btn-submit"
+        type="submit"
+        [disabled]="loginForm.invalid || loading"
+      >
+        <span *ngIf="loading" class="spinner"></span>
+        {{ loading ? 'Connexion en cours...' : 'Se connecter' }}
+      </button>
+
+      <div class="register-link">
+        <a routerLink="/auth/register">Pas encore de compte ? Créer un compte</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Comptes de test (à retirer en production) -->
+  <div class="test-accounts">
+    <div class="test-accounts-header">Comptes de test disponibles</div>
+    <div class="test-account">
+      <span class="role">ADMIN</span>
+      <span class="credentials">admin / admin123</span>
+    </div>
+    <div class="test-account">
+      <span class="role">GESTIONNAIRE</span>
+      <span class="credentials">gestionnaire / gestionnaire123</span>
+    </div>
+    <div class="test-account">
+      <span class="role">EMPLOYÉ</span>
+      <span class="credentials">employe / employe123</span>
     </div>
   </div>
-
-  <div class="mb-3">
-    <label class="form-label">Mot de passe</label>
-    <input type="password" formControlName="password" class="form-control" placeholder="Votre mot de passe">
-  </div>
-
-  <button class="btn btn-lg btn-primary w-100" type="submit" [disabled]="loginForm.invalid || loading">
-    {{ loading ? 'Connexion...' : 'Se connecter' }}
-  </button>
-
-  <div class="mt-3 text-center">
-    <a routerLink="/auth/register">Pas encore de compte ? Créer un compte</a>
-  </div>
-</form>
+</div>

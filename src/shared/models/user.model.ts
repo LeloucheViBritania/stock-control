@@ -13,7 +13,8 @@ export interface Utilisateur {
 }
 
 // Réponse typique d'un login (JWT + Info user)
+// IMPORTANT: Le backend retourne "access_token" et "utilisateur" (format snake_case API)
 export interface AuthResponse {
-  accessToken: string;
-  user: Utilisateur;
+  access_token: string;
+  utilisateur: Utilisateur;
 }

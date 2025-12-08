@@ -1,0 +1,383 @@
+// Dashboard Home Component Styles - Modern Design
+
+.dashboard-container {
+  padding: 2rem;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.dashboard-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// Stats Grid
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+
+  .stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    &.white .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.pink {
+        background: linear-gradient(135deg, #FFE5E5, #FFD4D4);
+        color: #FF6B9D;
+      }
+
+      &.purple {
+        background: linear-gradient(135deg, #E8E0FF, #D4C5FF);
+        color: #8B5CF6;
+      }
+    }
+
+    &.white .stat-content {
+      flex: 1;
+
+      .stat-label {
+        font-size: 0.875rem;
+        color: #6B7280;
+        margin: 0 0 0.5rem;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1F2937;
+        margin: 0 0 0.5rem;
+      }
+
+      .stat-change {
+        font-size: 0.75rem;
+        color: #6B7280;
+
+        span {
+          color: #10B981;
+          font-weight: 600;
+        }
+      }
+    }
+
+    &.purple, &.orange {
+      justify-content: space-between;
+
+      .stat-info .white {
+        color: white;
+      }
+
+      .stat-label {
+        font-size: 0.875rem;
+        margin: 0 0 0.5rem;
+        opacity: 0.9;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem;
+      }
+
+      .stat-change {
+        font-size: 0.75rem;
+        opacity: 0.85;
+      }
+
+      .stat-icon-large svg {
+        width: 64px;
+        height: 64px;
+        opacity: 0.3;
+        stroke: white;
+      }
+    }
+
+    &.purple {
+      background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    }
+
+    &.orange {
+      background: linear-gradient(135deg, #FF8A65, #FF7043);
+    }
+  }
+}
+
+// Invoices
+.invoices-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  overflow: hidden;
+
+  .card-header-custom {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #E5E7EB;
+
+    h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .btn-more {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #6B7280;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead tr {
+      background: #F9FAFB;
+
+      th {
+        padding: 0.875rem 1.5rem;
+        text-align: left;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #6B7280;
+        text-transform: uppercase;
+        border-bottom: 1px solid #E5E7EB;
+      }
+    }
+
+    tbody tr:hover {
+      background: #F9FAFB;
+    }
+
+    tbody td {
+      padding: 1rem 1.5rem;
+      font-size: 0.875rem;
+      color: #374151;
+      border-bottom: 1px solid #F3F4F6;
+
+      .badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+
+        &.badge-paid {
+          background: #D1FAE5;
+          color: #065F46;
+        }
+
+        &.badge-due {
+          background: #FED7AA;
+          color: #9A3412;
+        }
+      }
+    }
+  }
+}
+
+// Bottom Grid
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.8fr;
+  gap: 1.5rem;
+
+  > div {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+  }
+}
+
+// Chart
+.chart-card h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem;
+}
+
+.chart-svg {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 1rem;
+}
+
+.chart-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #6B7280;
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+
+      &.red {
+        background: #ff6b6b;
+      }
+
+      &.purple {
+        background: #7c3aed;
+      }
+    }
+  }
+}
+
+// Products
+.top-products-card .card-header-custom {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .week-label {
+    font-size: 0.75rem;
+    color: #FF8A65;
+    font-weight: 600;
+  }
+}
+
+.products-table table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead th {
+    padding: 0.75rem 0.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6B7280;
+    border-bottom: 1px solid #E5E7EB;
+  }
+
+  tbody tr:hover {
+    background: #F9FAFB;
+  }
+
+  tbody td {
+    padding: 0.875rem 0.5rem;
+    font-size: 0.875rem;
+    color: #374151;
+    border-bottom: 1px solid #F3F4F6;
+
+    &:first-child {
+      color: #8B5CF6;
+      font-weight: 600;
+    }
+  }
+}
+
+// Todo
+.todo-card .card-header-custom {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .btn-more {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #6B7280;
+  }
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .todo-item {
+    display: flex;
+    gap: 1rem;
+
+    .todo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .todo-date {
+      font-size: 0.75rem;
+      color: #FF8A65;
+      font-weight: 600;
+      margin: 0 0 0.25rem;
+    }
+
+    .todo-title {
+      font-size: 0.875rem;
+      color: #374151;
+      margin: 0;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 1200px) {
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

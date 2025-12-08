@@ -7,9 +7,11 @@ import { TierAbonnement } from '../../../../../shared/models/enums.model';
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html'
+,
+  standalone: false
 })
 export class ProductFormComponent implements OnInit {
-  productForm?: FormGroup;
+  productForm!: FormGroup;
   isPremium = false;
 
   constructor(
@@ -47,8 +49,8 @@ export class ProductFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.productForm.invalid) return;
-    
+    if (!this.productForm || this.productForm.invalid) return;
+
     const formData = this.productForm.getRawValue();
     
     // Nettoyage avant envoi

@@ -1,22 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap, catchError, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthResponse, Utilisateur } from '../../../shared/models/user.model';
 import { LoginDto } from './dto/login.dto'; // À créer : email/password
 import { TierAbonnement } from '../../../shared/models/enums.model';
+import { NotificationService } from '../services/notification.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
-  
+
   // Stocke l'état de l'utilisateur actuel
   private currentUserSubject = new BehaviorSubject<Utilisateur | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private notificationService: NotificationService
+  ) {
     // Au démarrage, on pourrait charger l'utilisateur depuis le localStorage
     this.loadUserFromStorage();
   }
@@ -24,12 +28,21 @@ export class AuthService {
   login(credentials: LoginDto): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
-        // 1. Stocker le token
-        localStorage.setItem('token', response.accessToken);
-        // 2. Stocker l'utilisateur (optionnel, ou juste décoder le token)
-        localStorage.setItem('user', JSON.stringify(response.user));
+        // 1. Stocker le token (backend retourne access_token)
+        localStorage.setItem('token', response.access_token);
+        // 2. Stocker l'utilisateur (backend retourne utilisateur)
+        localStorage.setItem('user', JSON.stringify(response.utilisateur));
         // 3. Mettre à jour l'état de l'application
-        this.currentUserSubject.next(response.user);
+        this.currentUserSubject.next(response.utilisateur);
+        // 4. Afficher une notification de succès
+        this.notificationService.success(
+          `Bienvenue ${response.utilisateur.nomComplet || response.utilisateur.nomUtilisateur}!`,
+          'Connexion réussie'
+        );
+      }),
+      catchError(error => {
+        this.notificationService.handleError(error, 'Échec de la connexion');
+        return throwError(() => error);
       })
     );
   }
@@ -38,6 +51,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.currentUserSubject.next(null);
+    this.notificationService.info('À bientôt!', 'Déconnexion');
   }
 
   // Utilitaire pour vérifier rapidement si Premium
@@ -54,6 +68,17 @@ export class AuthService {
   }
 
   register(user: any): Observable<any> {
-  return this.http.post(`${this.apiUrl}/register`, user);
-}
+    return this.http.post(`${this.apiUrl}/register`, user).pipe(
+      tap(() => {
+        this.notificationService.success(
+          'Vous pouvez maintenant vous connecter',
+          'Inscription réussie'
+        );
+      }),
+      catchError(error => {
+        this.notificationService.handleError(error, 'Échec de l\'inscription');
+        return throwError(() => error);
+      })
+    );
+  }
 }

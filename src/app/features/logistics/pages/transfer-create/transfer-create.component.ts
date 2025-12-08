@@ -9,9 +9,11 @@ import { Produit } from '../../../../../shared/models/product.model';
   selector: 'app-transfer-create',
   templateUrl: './transfer-create.component.html',
   styleUrls: ['./transfer-create.component.scss']
+,
+  standalone: false
 })
 export class TransferCreateComponent implements OnInit {
-  transferForm?: FormGroup;
+  transferForm!: FormGroup;
   warehouses: Entrepot[] = [];
   products: Produit[] = [];
   
@@ -46,7 +48,7 @@ export class TransferCreateComponent implements OnInit {
 
   // Getter raccourci pour le template HTML
   get lignes(): FormArray {
-    return this.transferForm?.get('lignes') as FormArray;
+    return this.transferForm.get('lignes') as FormArray;
   }
 
   addProductLine(): void {
@@ -77,23 +79,23 @@ export class TransferCreateComponent implements OnInit {
 
   private setupDynamicValidation(): void {
     // DYNAMISATION : Quand la source change, on met à jour la liste de destination possible
-    this.transferForm?.get('entrepotSourceId')?.valueChanges.subscribe(sourceId => {
+    this.transferForm.get('entrepotSourceId')?.valueChanges.subscribe(sourceId => {
       // On filtre la destination pour ne pas afficher l'entrepôt source
       this.destWarehouses = this.warehouses.filter(w => w.id !== +sourceId);
-      
+
       // Si la destination actuelle est devenue invalide (identique à la source), on reset
-      const currentDest = this.transferForm?.get('entrepotDestinationId')?.value;
+      const currentDest = this.transferForm.get('entrepotDestinationId')?.value;
       if (currentDest === sourceId) {
-        this.transferForm?.get('entrepotDestinationId')?.setValue(null);
+        this.transferForm.get('entrepotDestinationId')?.setValue(null);
       }
     });
   }
 
   onSubmit(): void {
-    if (this.transferForm?.invalid) return;
-    
+    if (this.transferForm.invalid) return;
+
     // Envoi au backend
-    this.logisticsService.createTransfer(this.transferForm?.value).subscribe({
+    this.logisticsService.createTransfer(this.transferForm.value).subscribe({
       next: (res) => {
         console.log('Transfert créé:', res);
         // Redirection vers la liste des transferts...

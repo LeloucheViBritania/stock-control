@@ -1,1 +1,467 @@
-/* You can add global styles to this file, and also import other style files */
+/* ==================== STOCK CONTROL - STYLES GLOBAUX ==================== */
+
+// Import du système de design
+@import 'styles/variables';
+@import 'styles/mixins';
+
+// ========== RESET & BASE ==========
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-normal;
+  color: $text-primary;
+  background-color: $background-secondary;
+  min-height: 100vh;
+}
+
+// ========== TYPOGRAPHIE ==========
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: $spacing-4;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+  color: $text-primary;
+}
+
+h1 { font-size: $font-size-4xl; }
+h2 { font-size: $font-size-3xl; }
+h3 { font-size: $font-size-2xl; }
+h4 { font-size: $font-size-xl; }
+h5 { font-size: $font-size-lg; }
+h6 { font-size: $font-size-base; }
+
+p {
+  margin-bottom: $spacing-4;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+  transition: color $transition-base;
+
+  &:hover {
+    color: $primary-dark;
+    text-decoration: underline;
+  }
+}
+
+// ========== BOUTONS ==========
+.btn {
+  @include button-base;
+
+  &-primary {
+    @include button-variant($primary, $primary, $primary-light, $primary-light, $primary-dark);
+  }
+
+  &-secondary {
+    @include button-variant($secondary, $secondary, $secondary-light, $secondary-light, $secondary-dark);
+    color: white;
+  }
+
+  &-success {
+    @include button-variant($success, $success, $success-light, $success-light, $success-dark);
+  }
+
+  &-danger {
+    @include button-variant($danger, $danger, $danger-light, $danger-light, $danger-dark);
+  }
+
+  &-warning {
+    @include button-variant($warning, $warning, $warning-light, $warning-light, $warning-dark);
+  }
+
+  &-outline-primary {
+    background: transparent;
+    border-color: $primary;
+    color: $primary;
+
+    &:hover:not(:disabled) {
+      background: $primary;
+      color: white;
+    }
+  }
+
+  &-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: $text-secondary;
+
+    &:hover:not(:disabled) {
+      background: $gray-100;
+      color: $text-primary;
+    }
+  }
+
+  &-sm {
+    padding: $spacing-1 $spacing-3;
+    font-size: $font-size-xs;
+  }
+
+  &-lg {
+    padding: $spacing-3 $spacing-6;
+    font-size: $font-size-lg;
+  }
+
+  &-icon {
+    padding: $spacing-2;
+    aspect-ratio: 1;
+  }
+}
+
+// ========== FORMULAIRES ==========
+.form-group {
+  @include form-group;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: $spacing-2;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $text-primary;
+}
+
+.form-control {
+  @include input-base;
+
+  &.is-invalid {
+    border-color: $danger;
+
+    &:focus {
+      border-color: $danger;
+      box-shadow: 0 0 0 3px rgba($danger, 0.1);
+    }
+  }
+
+  &.is-valid {
+    border-color: $success;
+
+    &:focus {
+      border-color: $success;
+      box-shadow: 0 0 0 3px rgba($success, 0.1);
+    }
+  }
+}
+
+.form-select {
+  @include input-base;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $spacing-3 center;
+  background-size: 12px;
+  padding-right: $spacing-8;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  margin-bottom: $spacing-3;
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+  }
+
+  label {
+    margin: 0;
+    font-size: $font-size-sm;
+    cursor: pointer;
+  }
+}
+
+.invalid-feedback,
+.text-danger {
+  color: $danger;
+  font-size: $font-size-xs;
+  margin-top: $spacing-1;
+}
+
+.valid-feedback {
+  color: $success;
+  font-size: $font-size-xs;
+  margin-top: $spacing-1;
+}
+
+// ========== BADGES ==========
+.badge {
+  @include badge($gray-200, $text-primary);
+
+  &-primary { @include badge($primary-100, $primary-dark); }
+  &-secondary { @include badge($gray-200, $text-primary); }
+  &-success { @include badge($success-50, $success-dark); }
+  &-danger { @include badge($danger-50, $danger-dark); }
+  &-warning { @include badge($warning-50, $warning-dark); }
+  &-info { @include badge($info-50, $info-dark); }
+}
+
+// ========== CARDS ==========
+.card {
+  @include card;
+
+  &-hover {
+    @include card-hover;
+  }
+
+  &-header {
+    padding: $spacing-4 $spacing-6;
+    border-bottom: 1px solid $border-color;
+    background: $gray-50;
+    border-radius: $card-border-radius $card-border-radius 0 0;
+    margin: -$card-padding -$card-padding $spacing-4;
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+    }
+  }
+
+  &-body {
+    padding: $spacing-6;
+  }
+
+  &-footer {
+    padding: $spacing-4 $spacing-6;
+    border-top: 1px solid $border-color;
+    background: $gray-50;
+    border-radius: 0 0 $card-border-radius $card-border-radius;
+    margin: $spacing-4 -$card-padding -$card-padding;
+  }
+
+  &-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    margin-bottom: $spacing-2;
+  }
+}
+
+// ========== TABLES ==========
+.table-responsive {
+  @include table-responsive;
+}
+
+// ========== ALERTS ==========
+.alert {
+  padding: $spacing-4;
+  border-radius: $radius-md;
+  border: 1px solid transparent;
+  margin-bottom: $spacing-4;
+  font-size: $font-size-sm;
+
+  &-success {
+    background: $success-50;
+    border-color: $success;
+    color: $success-dark;
+  }
+
+  &-danger {
+    background: $danger-50;
+    border-color: $danger;
+    color: $danger-dark;
+  }
+
+  &-warning {
+    background: $warning-50;
+    border-color: $warning;
+    color: $warning-dark;
+  }
+
+  &-info {
+    background: $info-50;
+    border-color: $info;
+    color: $info-dark;
+  }
+}
+
+// ========== SPINNER/LOADER ==========
+.spinner {
+  @include spinner;
+
+  &-lg {
+    @include spinner(2rem);
+  }
+
+  &-sm {
+    @include spinner(0.75rem);
+  }
+}
+
+// ========== UTILITIES ==========
+.text {
+  &-center { text-align: center; }
+  &-left { text-align: left; }
+  &-right { text-align: right; }
+  &-muted { color: $text-secondary; }
+  &-primary { color: $primary; }
+  &-success { color: $success; }
+  &-danger { color: $danger; }
+  &-warning { color: $warning; }
+}
+
+.bg {
+  &-white { background-color: $white; }
+  &-gray { background-color: $gray-100; }
+  &-primary { background-color: $primary; color: white; }
+  &-success { background-color: $success; color: white; }
+  &-danger { background-color: $danger; color: white; }
+}
+
+.d {
+  &-none { display: none; }
+  &-block { display: block; }
+  &-flex { display: flex; }
+  &-grid { display: grid; }
+  &-inline { display: inline; }
+  &-inline-block { display: inline-block; }
+  &-inline-flex { display: inline-flex; }
+}
+
+.flex {
+  &-center { @include flex-center; }
+  &-between { @include flex-between; }
+  &-column { @include flex-column; }
+  &-wrap { flex-wrap: wrap; }
+  &-1 { flex: 1; }
+}
+
+.gap {
+  &-1 { gap: $spacing-1; }
+  &-2 { gap: $spacing-2; }
+  &-3 { gap: $spacing-3; }
+  &-4 { gap: $spacing-4; }
+  &-6 { gap: $spacing-6; }
+}
+
+.m {
+  &-0 { margin: 0; }
+  &-1 { margin: $spacing-1; }
+  &-2 { margin: $spacing-2; }
+  &-3 { margin: $spacing-3; }
+  &-4 { margin: $spacing-4; }
+  &-auto { margin: auto; }
+
+  &b-0 { margin-bottom: 0; }
+  &b-2 { margin-bottom: $spacing-2; }
+  &b-3 { margin-bottom: $spacing-3; }
+  &b-4 { margin-bottom: $spacing-4; }
+
+  &t-2 { margin-top: $spacing-2; }
+  &t-3 { margin-top: $spacing-3; }
+  &t-4 { margin-top: $spacing-4; }
+}
+
+.p {
+  &-0 { padding: 0; }
+  &-2 { padding: $spacing-2; }
+  &-3 { padding: $spacing-3; }
+  &-4 { padding: $spacing-4; }
+  &-6 { padding: $spacing-6; }
+}
+
+.w {
+  &-full { width: 100%; }
+  &-auto { width: auto; }
+}
+
+.h {
+  &-full { height: 100%; }
+  &-auto { height: auto; }
+}
+
+.shadow {
+  &-sm { box-shadow: $shadow-sm; }
+  &-base { box-shadow: $shadow-base; }
+  &-md { box-shadow: $shadow-md; }
+  &-lg { box-shadow: $shadow-lg; }
+  &-xl { box-shadow: $shadow-xl; }
+}
+
+.rounded {
+  &-none { border-radius: $radius-none; }
+  &-sm { border-radius: $radius-sm; }
+  &-base { border-radius: $radius-base; }
+  &-md { border-radius: $radius-md; }
+  &-lg { border-radius: $radius-lg; }
+  &-full { border-radius: $radius-full; }
+}
+
+// ========== SCROLLBAR PERSONNALISÉ ==========
+* {
+  @include scrollbar;
+}
+
+// ========== CONTENEUR PRINCIPAL ==========
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 $spacing-4;
+
+  @include md {
+    max-width: 720px;
+  }
+
+  @include lg {
+    max-width: 960px;
+  }
+
+  @include xl {
+    max-width: 1140px;
+  }
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0 $spacing-4;
+}
+
+// ========== GRID ==========
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -$spacing-2;
+}
+
+.col {
+  flex: 1;
+  padding: 0 $spacing-2;
+}
+
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    flex: 0 0 percentage($i / 12);
+    max-width: percentage($i / 12);
+    padding: 0 $spacing-2;
+  }
+}
+
+// ========== RESPONSIVE UTILITIES ==========
+@include md {
+  .d-md-block { display: block; }
+  .d-md-none { display: none; }
+}
+
+@include lg {
+  .d-lg-block { display: block; }
+  .d-lg-none { display: none; }
+}

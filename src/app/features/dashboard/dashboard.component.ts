@@ -5,6 +5,8 @@ import { AuthService } from '../../core/auth/auth.service';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
+,
+  standalone: false
 })
 export class DashboardComponent implements OnInit {
   stats: any = {}; // Rempli par le service

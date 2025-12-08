@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService } from './auth.service';
 import { TierAbonnement } from '../../../shared/models/enums.model';
 import { map, take } from 'rxjs/operators';
 

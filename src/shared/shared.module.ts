@@ -18,7 +18,7 @@ import { IfPremiumDirective } from './directives/if-premium.directive';
     CommonModule,
     ReactiveFormsModule, // Indispensable pour [formGroup]
     FormsModule,
-    IfPremiumDirective
+    IfPremiumDirective // Export directive for templates
   ]
 })
 export class SharedModule { }

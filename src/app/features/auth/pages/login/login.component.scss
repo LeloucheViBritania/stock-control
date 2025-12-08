@@ -1,0 +1,214 @@
+@import '../../../../../styles/variables';
+@import '../../../../../styles/mixins';
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, $primary-50 0%, $primary-100 100%);
+  padding: $spacing-4;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-card {
+  @include card;
+  @include elevation(3);
+  padding: $spacing-8;
+  background: $white;
+
+  .login-header {
+    text-align: center;
+    margin-bottom: $spacing-8;
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto $spacing-4;
+      background: linear-gradient(135deg, $primary, $primary-dark);
+      border-radius: $radius-xl;
+      @include flex-center;
+      font-size: $font-size-3xl;
+      color: white;
+      font-weight: $font-weight-bold;
+    }
+
+    h1 {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      color: $text-primary;
+      margin-bottom: $spacing-2;
+    }
+
+    p {
+      color: $text-secondary;
+      font-size: $font-size-sm;
+      margin: 0;
+    }
+  }
+
+  form {
+    .form-group {
+      margin-bottom: $spacing-5;
+
+      label {
+        display: block;
+        margin-bottom: $spacing-2;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        color: $text-primary;
+      }
+
+      input {
+        @include input-base;
+        height: $input-height;
+        font-size: $font-size-base;
+
+        &:focus {
+          border-color: $primary;
+          box-shadow: 0 0 0 3px rgba($primary, 0.1);
+        }
+      }
+
+      .error-message {
+        margin-top: $spacing-2;
+        font-size: $font-size-xs;
+        color: $danger;
+        display: flex;
+        align-items: center;
+        gap: $spacing-1;
+
+        &::before {
+          content: '⚠';
+        }
+      }
+    }
+
+    .alert {
+      margin-bottom: $spacing-4;
+      padding: $spacing-3;
+      border-radius: $radius-md;
+      background: $danger-50;
+      border: 1px solid $danger;
+      color: $danger-dark;
+      font-size: $font-size-sm;
+      display: flex;
+      align-items: center;
+      gap: $spacing-2;
+
+      &::before {
+        content: '✖';
+        font-weight: $font-weight-bold;
+      }
+    }
+
+    .btn-submit {
+      @include button-base;
+      @include button-variant($primary, $primary, $primary-light, $primary-light, $primary-dark);
+      width: 100%;
+      height: $input-height;
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      margin-top: $spacing-2;
+      transition: all $transition-base;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: $shadow-md;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .spinner {
+        @include spinner(1rem, white);
+        margin-right: $spacing-2;
+      }
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: $spacing-6;
+      padding-top: $spacing-6;
+      border-top: 1px solid $border-color;
+
+      a {
+        color: $primary;
+        text-decoration: none;
+        font-weight: $font-weight-medium;
+        font-size: $font-size-sm;
+        transition: color $transition-base;
+
+        &:hover {
+          color: $primary-dark;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+// ========== TEST ACCOUNTS INFO ==========
+.test-accounts {
+  margin-top: $spacing-6;
+  padding: $spacing-4;
+  background: $white;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+
+  .test-accounts-header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    margin-bottom: $spacing-3;
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+
+    &::before {
+      content: 'ℹ';
+      font-size: $font-size-lg;
+    }
+  }
+
+  .test-account {
+    padding: $spacing-2 $spacing-3;
+    background: $gray-50;
+    border-radius: $radius-base;
+    margin-bottom: $spacing-2;
+    font-size: $font-size-xs;
+    font-family: $font-family-mono;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .role {
+      display: inline-block;
+      padding: 2px $spacing-2;
+      background: $primary-100;
+      color: $primary-dark;
+      border-radius: $radius-sm;
+      font-weight: $font-weight-semibold;
+      margin-right: $spacing-2;
+    }
+
+    .credentials {
+      color: $text-secondary;
+    }
+  }
+}
+
+// ========== RESPONSIVE ==========
+@include sm {
+  .login-card {
+    padding: $spacing-10;
+  }
+}

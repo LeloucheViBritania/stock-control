@@ -24,7 +24,8 @@ import { SalesService, Client } from '../../../../core/services/sales.service';
         </div>
       </div>
     </div>
-  `
+  `,
+  standalone: false
 })
 export class ClientListComponent implements OnInit {
   clients: Client[] = [];

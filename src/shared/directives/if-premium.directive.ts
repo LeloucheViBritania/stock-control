@@ -5,6 +5,8 @@ import { TierAbonnement } from '../models/enums.model';
 
 @Directive({
   selector: '[appIfPremium]' // C'est ce nom qu'on utilisera dans le HTML
+,
+  standalone: false
 })
 export class IfPremiumDirective implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();

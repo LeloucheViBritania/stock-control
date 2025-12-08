@@ -1,0 +1,188 @@
+// Dashboard Component Styles
+
+.dashboard-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+  }
+
+  // Grid Stats Layout
+  .grid-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    .card {
+      background: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.75rem;
+      }
+
+      p {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0;
+
+        &.warning {
+          color: #dc3545;
+        }
+      }
+    }
+  }
+
+  // Premium Section
+  .premium-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: #fff;
+
+    .premium-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .badge-premium {
+          background: rgba(255, 255, 255, 0.2);
+          padding: 0.25rem 0.75rem;
+          border-radius: 0.25rem;
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 1px;
+        }
+      }
+    }
+
+    .grid-stats {
+      .card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+        h3 {
+          color: rgba(255, 255, 255, 0.9);
+        }
+
+        p {
+          color: #fff;
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.25);
+          border-color: rgba(255, 255, 255, 0.4);
+        }
+      }
+    }
+  }
+
+  // Upgrade Banner
+  .upgrade-banner {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    text-align: center;
+    color: #fff;
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.95;
+    }
+
+    .btn-upgrade {
+      background: #fff;
+      color: #f5576c;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .grid-stats {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .premium-section {
+      padding: 1.5rem;
+
+      .premium-header h2 {
+        font-size: 1.25rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+    }
+
+    .upgrade-banner {
+      padding: 1.5rem;
+
+      h3 {
+        font-size: 1.25rem;
+      }
+
+      .btn-upgrade {
+        width: 100%;
+      }
+    }
+  }
+}

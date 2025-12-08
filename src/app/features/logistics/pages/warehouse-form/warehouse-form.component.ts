@@ -6,11 +6,13 @@ import { LogisticsService } from '../../../../core/services/logistics.service';
 @Component({
   selector: 'app-warehouse-form',
   templateUrl: './warehouse-form.component.html'
+,
+  standalone: false
 })
 export class WarehouseFormComponent implements OnInit {
-  form?: FormGroup;
+  form!: FormGroup;
   isEditMode = false;
-  id?: number;
+  id: number= 0;
 
   constructor(
     private fb: FormBuilder,
@@ -33,18 +35,18 @@ export class WarehouseFormComponent implements OnInit {
     });
 
     if (this.isEditMode) {
-      this.logisticsService.getWarehouse(this.id?).subscribe(data => {
-        this.form?.patchValue(data);
+      this.logisticsService.getWarehouse(this.id).subscribe(data => {
+        this.form.patchValue(data);
       });
     }
   }
 
   onSubmit() {
-    if (this.form?.invalid) return;
+    if (this.form.invalid) return;
 
     const request$ = this.isEditMode
-      ? this.logisticsService.updateWarehouse(this.id, this.form?.value) // Méthode à ajouter au service
-      : this.logisticsService.createWarehouse(this.form?.value);
+      ? this.logisticsService.updateWarehouse(this.id, this.form.value) // Méthode à ajouter au service
+      : this.logisticsService.createWarehouse(this.form.value);
 
     request$.subscribe({
       next: () => this.router.navigate(['/logistics/warehouses']),
