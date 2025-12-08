@@ -1,0 +1,85 @@
+<div class="container-fluid py-4">
+  
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3">Tableau de Bord</h1>
+      <p class="text-muted">Aperçu au {{ currentDate | date:'fullDate' }}</p>
+    </div>
+    <button class="btn btn-outline-primary" (click)="loadStats()">
+      <i class="icon-refresh"></i> Actualiser
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2">Chargement des données...</p>
+  </div>
+
+  <div *ngIf="!isLoading && stats">
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="card border-start border-primary border-4 shadow-sm">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted small">Total Produits</h6>
+            <h2 class="display-6">{{ stats.totalProduits }}</h2>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card border-start border-warning border-4 shadow-sm">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted small">Alertes Stock</h6>
+            <h2 class="display-6 text-warning">{{ stats.alerteStock }}</h2>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card border-start border-success border-4 shadow-sm">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted small">Commandes à Traiter</h6>
+            <h2 class="display-6">{{ stats.commandesEnAttente }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *appIfPremium class="premium-dashboard-section">
+      <div class="alert alert-light border shadow-sm mb-4">
+        <h4 class="alert-heading"><i class="icon-star text-warning"></i> Insights Premium</h4>
+        <hr>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card bg-dark text-white h-100">
+              <div class="card-body text-center">
+                <h3>Valeur du Stock</h3>
+                <p class="display-5 fw-bold">{{ stats.valeurStock | currency:'EUR' }}</p>
+                <small class="text-white-50">Basé sur le coût moyen pondéré</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+             <div class="card h-100">
+               <div class="card-header">Top 5 Produits (Volume)</div>
+               <ul class="list-group list-group-flush">
+                 <li class="list-group-item d-flex justify-content-between" *ngFor="let p of stats.topProduits">
+                   <span>{{ p.nom }}</span>
+                   <span class="badge bg-primary rounded-pill">{{ p.vendu }} ventes</span>
+                 </li>
+               </ul>
+             </div>
+          </div>
+        </div>
+        
+        <div class="card mt-3">
+          <div class="card-body" style="height: 300px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+            <p class="text-muted">Graphique d'évolution des ventes (Intégration Chart.js ici)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

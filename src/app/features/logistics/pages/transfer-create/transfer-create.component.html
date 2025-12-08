@@ -1,0 +1,93 @@
+<div class="container-fluid">
+  <h2>Nouveau Transfert de Stock</h2>
+  
+  <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
+    
+    <div class="card mb-4">
+      <div class="card-header">Origine et Destination</div>
+      <div class="card-body grid-2-col">
+        
+        <div class="form-group">
+          <label>Entrepôt Source</label>
+          <select formControlName="entrepotSourceId" class="form-control">
+            <option [ngValue]="null">-- Sélectionner --</option>
+            <option *ngFor="let w of sourceWarehouses" [value]="w.id">
+              {{ w.nom }} ({{ w.code }})
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Entrepôt Destination</label>
+          <select formControlName="entrepotDestinationId" class="form-control">
+            <option [ngValue]="null">-- Sélectionner --</option>
+            <option *ngFor="let w of destWarehouses" [value]="w.id">
+              {{ w.nom }} ({{ w.code }})
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Date du transfert</label>
+          <input type="date" formControlName="dateTransfert" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Produits à transférer</span>
+        <button type="button" class="btn btn-sm btn-success" (click)="addProductLine()">
+          + Ajouter un produit
+        </button>
+      </div>
+      
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Produit</th>
+              <th width="150">Quantité</th>
+              <th width="50">Action</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="lignes">
+            <tr *ngFor="let line of lignes.controls; let i=index" [formGroupName]="i">
+              
+              <td>
+                <select formControlName="produitId" class="form-control">
+                  <option [ngValue]="null">Choisir un produit...</option>
+                  <option *ngFor="let p of products" [value]="p.id">
+                    {{ p.nom }} (Ref: {{ p.reference }})
+                  </option>
+                </select>
+              </td>
+              
+              <td>
+                <input type="number" formControlName="quantite" class="form-control" min="1">
+              </td>
+              
+              <td>
+                <button type="button" class="btn btn-danger btn-sm" (click)="removeProductLine(i)">
+                  X
+                </button>
+              </td>
+              
+            </tr>
+          </tbody>
+        </table>
+        
+        <div *ngIf="lignes.length === 0" class="text-danger p-2">
+          Veuillez ajouter au moins un produit.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="transferForm.invalid">
+        Valider le transfert
+      </button>
+    </div>
+
+  </form>
+</div>

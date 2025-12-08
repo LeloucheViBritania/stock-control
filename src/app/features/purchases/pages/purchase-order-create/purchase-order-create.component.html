@@ -1,0 +1,97 @@
+<div class="container-fluid">
+  <h2>Nouvelle Commande Fournisseur</h2>
+
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-header">Détails</div>
+          <div class="card-body">
+            
+            <div class="form-group mb-3">
+              <label>Fournisseur *</label>
+              <select formControlName="fournisseurId" class="form-select">
+                <option [ngValue]="null">-- Choisir --</option>
+                <option *ngFor="let f of suppliers" [value]="f.id">{{ f.nom }}</option>
+              </select>
+            </div>
+
+            <div class="form-group mb-3">
+              <label>Entrepôt de Réception *</label>
+              <select formControlName="entrepotId" class="form-select">
+                <option [ngValue]="null">-- Choisir --</option>
+                <option *ngFor="let w of warehouses" [value]="w.id">{{ w.nom }}</option>
+              </select>
+            </div>
+
+            <div class="form-group mb-3">
+              <label>Date Livraison Prévue</label>
+              <input type="date" formControlName="dateLivraisonPrevue" class="form-control">
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between">
+            <span>Produits à Commander</span>
+            <button type="button" class="btn btn-sm btn-success" (click)="addProductLine()">+ Ajouter</button>
+          </div>
+          <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+              <thead>
+                <tr>
+                  <th>Produit</th>
+                  <th width="120">Quantité</th>
+                  <th width="150">Prix Unitaire HT</th>
+                  <th width="150">Total Ligne</th>
+                  <th width="50"></th>
+                </tr>
+              </thead>
+              <tbody formArrayName="lignes">
+                <tr *ngFor="let item of lignes.controls; let i=index" [formGroupName]="i">
+                  <td>
+                    <select formControlName="produitId" class="form-select form-select-sm">
+                      <option [ngValue]="null">Produit...</option>
+                      <option *ngFor="let p of products" [value]="p.id">{{ p.nom }}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input type="number" formControlName="quantite" class="form-control form-control-sm" min="1">
+                  </td>
+                  <td>
+                    <input type="number" formControlName="prixUnitaire" class="form-control form-control-sm">
+                  </td>
+                  <td>
+                    {{ (item.get('quantite')?.value * item.get('prixUnitaire')?.value) | currency:'EUR' }}
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-link text-danger p-0" (click)="removeLine(i)">
+                      <i class="icon-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="fw-bold">
+                  <td colspan="3" class="text-end">Total Estimé HT :</td>
+                  <td>{{ calculateTotal() | currency:'EUR' }}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div class="mt-4 text-end">
+          <button type="button" class="btn btn-secondary me-2" routerLink="..">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="orderForm.invalid">
+            <i class="icon-check"></i> Créer le Bon de Commande
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,63 @@
+<div class="wrapper">
+  
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h3>StockControl</h3>
+    </div>
+
+    <ul class="list-unstyled components">
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="active">
+          <i class="icon-chart"></i> Tableau de bord
+        </a>
+      </li>
+      <li>
+        <a routerLink="/inventory" routerLinkActive="active">
+          <i class="icon-box"></i> Inventaire
+        </a>
+      </li>
+      <li>
+        <a routerLink="/purchases" routerLinkActive="active">
+          <i class="icon-cart"></i> Achats / Fournisseurs
+        </a>
+      </li>
+
+      <div *appIfPremium>
+        <li class="premium-menu-header">PREMIUM</li>
+        
+        <li>
+          <a routerLink="/logistics" routerLinkActive="active">
+            <i class="icon-truck"></i> Logistique
+          </a>
+        </li>
+        <li>
+          <a routerLink="/logistics/warehouses" routerLinkActive="active">
+            <i class="icon-home"></i> Entrepôts
+          </a>
+        </li>
+      </div>
+    </ul>
+  </nav>
+
+  <div class="content">
+    
+    <nav class="navbar navbar-light bg-light mb-4 shadow-sm">
+      <div class="container-fluid justify-content-end">
+        <div class="dropdown">
+          <button class="btn btn-link text-dark text-decoration-none" (click)="logout()">
+            <span *ngIf="authService.currentUser$ | async as user">
+              {{ user.nomUtilisateur }} 
+              <span class="badge bg-secondary">{{ user.tierAbonnement }}</span>
+            </span>
+            <i class="icon-logout ms-2"></i> Déconnexion
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main-body">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </div>
+</div>

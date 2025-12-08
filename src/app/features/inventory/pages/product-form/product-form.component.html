@@ -1,0 +1,55 @@
+<div class="form-container">
+  <h2>{{ productForm.get('id') ? 'Modifier' : 'Nouveau' }} Produit</h2>
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    
+    <div class="card mb-4">
+      <div class="card-header">Informations de base</div>
+      <div class="card-body grid-2-col">
+        <div class="form-group">
+          <label>Référence *</label>
+          <input type="text" formControlName="reference" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Nom du produit *</label>
+          <input type="text" formControlName="nom" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">Gestion du Stock</div>
+      <div class="card-body">
+        
+        <div *ngIf="!isPremium" class="stock-simple">
+          <div class="form-group">
+            <label>Quantité Initiale en Stock</label>
+            <input type="number" formControlName="quantiteStock" class="form-control">
+            <small class="text-muted">Stock simple géré directement sur la fiche produit.</small>
+          </div>
+        </div>
+
+        <div *appIfPremium class="stock-advanced">
+          <div class="alert alert-info">
+            <i class="icon-info"></i>
+            <strong>Mode Multi-Entrepôts actif :</strong> 
+            Le stock initial doit être ajouté via un 
+            <a routerLink="/logistics/adjustments">Ajustement de stock</a> 
+            ou un <a routerLink="/purchases/orders">Bon de commande</a> après la création de la fiche.
+          </div>
+        </div>
+
+        <div class="grid-2-col mt-3">
+          <div class="form-group">
+            <label>Seuil d'alerte min.</label>
+            <input type="number" formControlName="niveauStockMin" class="form-control">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">
+      Enregistrer
+    </button>
+  </form>
+</div>
