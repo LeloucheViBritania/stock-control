@@ -9,7 +9,7 @@ import { TierAbonnement } from '../../../../../shared/models/enums.model';
   templateUrl: './product-form.component.html'
 })
 export class ProductFormComponent implements OnInit {
-  productForm: FormGroup;
+  productForm?: FormGroup;
   isPremium = false;
 
   constructor(
