@@ -1,5 +1,5 @@
 import { Directive, TemplateRef, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from '../../core/auth/auth.service';
+import { AuthService } from '../../app/core/auth/auth.service';
 import { Subscription } from 'rxjs';
 import { TierAbonnement } from '../models/enums.model';
 

@@ -4,53 +4,46 @@ import { AuthGuard } from '../app/core/auth/auth.guard';
 import { PremiumGuard } from '../app/core/auth/premium.guard';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
+import {LandingPageComponent} from './features/public/landing-page/landing-page.component'
 
 const routes: Routes = [
-  // Routes Publiques (Login/Register)
+  // 1. Route par défaut = Landing Page (Publique)
+  {
+    path: '',
+    component: LandingPageComponent, // <--- Ajoutez ce composant ici
+    pathMatch: 'full'
+  },
+
+  // 2. Routes d'Auth (Login/Register)
   {
     path: 'auth',
     component: AuthLayoutComponent,
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
   },
-  
-  // Routes Protégées (Application)
+
+  // 3. Routes de l'Application (Protégées par AuthGuard)
   {
-    path: '',
+    path: '', // On garde le path vide ici pour les enfants, mais protégé par le Guard
     component: MainLayoutComponent,
-    canActivate: [AuthGuard], // Vérifie si connecté
+    canActivate: [AuthGuard], // <--- Bloque l'accès si pas connecté
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      
-      {
-        path: 'dashboard',
-        loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule)
+      { path: 'dashboard', loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule) },
+      { path: 'inventory', loadChildren: () => import('./features/inventory/inventory.module').then(m => m.InventoryModule) },
+      { path: 'sales', loadChildren: () => import('./features/sales/sales.module').then(m => m.SalesModule) },
+      { 
+        path: 'logistics', 
+        canActivate: [PremiumGuard],
+        loadChildren: () => import('./features/logistics/logistics.module').then(m => m.LogisticsModule) 
       },
-      
-      // Module Inventaire (Accessible à TOUS, mais le contenu changera)
-      {
-        path: 'inventory',
-        loadChildren: () => import('./features/inventory/inventory.module').then(m => m.InventoryModule)
-      },
-      
-      // Module Logistique (PREMIUM ONLY) - Multi-entrepôts, Transferts
-      // Si un utilisateur Gratuit essaie d'accéder ici, il sera redirigé
-      {
-        path: 'logistics',
-        canActivate: [PremiumGuard], 
-        loadChildren: () => import('./features/logistics/logistics.module').then(m => m.LogisticsModule)
-      },
-      
-      // Module Achats (Bons de commande = Premium, Fournisseurs = Tous)
-      // On gère la finesse à l'intérieur du module ou on sépare
-      {
-        path: 'purchases',
-        loadChildren: () => import('./features/purchases/purchases.module').then(m => m.PurchasesModule)
+      { 
+        path: 'purchases', 
+        loadChildren: () => import('./features/purchases/purchases.module').then(m => m.PurchasesModule) 
       }
     ]
   },
-  
+
   // Catch-all
-  { path: '**', redirectTo: 'dashboard' }
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

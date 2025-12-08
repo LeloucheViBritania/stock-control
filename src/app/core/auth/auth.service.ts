@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { AuthResponse, Utilisateur } from '../../shared/models/user.model';
+import { environment } from '../../environments/environment';
+import { AuthResponse, Utilisateur } from '../../../shared/models/user.model';
 import { LoginDto } from './dto/login.dto'; // À créer : email/password
-import { TierAbonnement } from '../../shared/models/enums.model';
+import { TierAbonnement } from '../../../shared/models/enums.model';
 
 @Injectable({
   providedIn: 'root'
@@ -52,4 +52,8 @@ export class AuthService {
       this.currentUserSubject.next(JSON.parse(userJson));
     }
   }
+
+  register(user: any): Observable<any> {
+  return this.http.post(`${this.apiUrl}/register`, user);
+}
 }

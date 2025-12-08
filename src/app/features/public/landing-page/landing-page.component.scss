@@ -1,0 +1,39 @@
+.landing-wrapper {
+  padding-top: 70px; // Espace pour la navbar fixe
+}
+
+.hero-section {
+  min-height: 80vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  
+  .hero-img {
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+  }
+}
+
+.icon-box {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.feature-card {
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: translateY(-10px);
+  }
+}
+
+// Petite animation flottante pour l'image
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+.floating-animation {
+  animation: float 6s ease-in-out infinite;
+}

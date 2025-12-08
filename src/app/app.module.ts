@@ -18,11 +18,14 @@ import { SharedModule } from '../shared/shared.module';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 
+import { LandingPageComponent } from './features/public/landing-page/landing-page.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     AuthLayoutComponent,
-    MainLayoutComponent
+    MainLayoutComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,
