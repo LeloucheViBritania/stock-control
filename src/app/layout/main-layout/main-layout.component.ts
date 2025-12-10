@@ -19,4 +19,8 @@ export class MainLayoutComponent {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
   }
+
+  toggleNotifications() {
+    // Logique pour afficher/masquer les notifications
+  }
 }

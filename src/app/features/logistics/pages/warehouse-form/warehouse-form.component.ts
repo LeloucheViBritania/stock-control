@@ -5,8 +5,8 @@ import { LogisticsService } from '../../../../core/services/logistics.service';
 
 @Component({
   selector: 'app-warehouse-form',
-  templateUrl: './warehouse-form.component.html'
-,
+  templateUrl: './warehouse-form.component.html',
+  styleUrls: ['./warehouse-form.component.scss'],
   standalone: false
 })
 export class WarehouseFormComponent implements OnInit {

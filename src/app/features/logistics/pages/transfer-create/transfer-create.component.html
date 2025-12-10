@@ -1,93 +1,240 @@
-<div class="container-fluid">
-  <h2>Nouveau Transfert de Stock</h2>
-  
-  <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
-    
-    <div class="card mb-4">
-      <div class="card-header">Origine et Destination</div>
-      <div class="card-body grid-2-col">
-        
-        <div class="form-group">
-          <label>Entrepôt Source</label>
-          <select formControlName="entrepotSourceId" class="form-control">
-            <option [ngValue]="null">-- Sélectionner --</option>
-            <option *ngFor="let w of sourceWarehouses" [value]="w.id">
-              {{ w.nom }} ({{ w.code }})
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Entrepôt Destination</label>
-          <select formControlName="entrepotDestinationId" class="form-control">
-            <option [ngValue]="null">-- Sélectionner --</option>
-            <option *ngFor="let w of destWarehouses" [value]="w.id">
-              {{ w.nom }} ({{ w.code }})
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Date du transfert</label>
-          <input type="date" formControlName="dateTransfert" class="form-control">
-        </div>
-      </div>
+<div class="transfer-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <a routerLink="/logistics/transfers" class="btn-back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Retour</span>
+      </a>
+      <h1 class="page-title">
+        <svg class="title-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="17 1 21 5 17 9"></polyline>
+          <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+          <polyline points="7 23 3 19 7 15"></polyline>
+          <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+        </svg>
+        Nouveau Transfert de Stock
+      </h1>
     </div>
+  </div>
 
-    <div class="card mb-4">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <span>Produits à transférer</span>
-        <button type="button" class="btn btn-sm btn-success" (click)="addProductLine()">
-          + Ajouter un produit
-        </button>
+  <!-- Form -->
+  <form [formGroup]="transferForm" (ngSubmit)="onSubmit()" class="transfer-form">
+    
+    <!-- Origin and Destination Card -->
+    <div class="form-card">
+      <div class="card-header">
+        <svg class="card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <h2>Origine et destination</h2>
       </div>
       
       <div class="card-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Produit</th>
-              <th width="150">Quantité</th>
-              <th width="50">Action</th>
-            </tr>
-          </thead>
-          <tbody formArrayName="lignes">
-            <tr *ngFor="let line of lignes.controls; let i=index" [formGroupName]="i">
-              
-              <td>
-                <select formControlName="produitId" class="form-control">
-                  <option [ngValue]="null">Choisir un produit...</option>
-                  <option *ngFor="let p of products" [value]="p.id">
-                    {{ p.nom }} (Ref: {{ p.reference }})
-                  </option>
-                </select>
-              </td>
-              
-              <td>
-                <input type="number" formControlName="quantite" class="form-control" min="1">
-              </td>
-              
-              <td>
-                <button type="button" class="btn btn-danger btn-sm" (click)="removeProductLine(i)">
-                  X
-                </button>
-              </td>
-              
-            </tr>
-          </tbody>
-        </table>
-        
-        <div *ngIf="lignes.length === 0" class="text-danger p-2">
-          Veuillez ajouter au moins un produit.
+        <div class="transfer-flow">
+          <!-- Source Warehouse -->
+          <div class="warehouse-select source">
+            <div class="warehouse-label">
+              <svg class="label-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Entrepôt source</span>
+              <span class="required">*</span>
+            </div>
+            <div class="select-wrapper">
+              <svg class="select-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              </svg>
+              <select 
+                formControlName="entrepotSourceId" 
+                class="form-select"
+                [class.invalid]="transferForm.get('entrepotSourceId')?.invalid && transferForm.get('entrepotSourceId')?.touched"
+              >
+                <option [ngValue]="null">Sélectionner un entrepôt...</option>
+                <option *ngFor="let w of sourceWarehouses" [value]="w.id">
+                  {{ w.nom }} ({{ w.code }})
+                </option>
+              </select>
+            </div>
+            <span 
+              *ngIf="transferForm.get('entrepotSourceId')?.invalid && transferForm.get('entrepotSourceId')?.touched"
+              class="error-text"
+            >
+              Entrepôt source requis
+            </span>
+          </div>
+
+          <!-- Arrow Icon -->
+          <div class="transfer-arrow">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+
+          <!-- Destination Warehouse -->
+          <div class="warehouse-select destination">
+            <div class="warehouse-label">
+              <svg class="label-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Entrepôt destination</span>
+              <span class="required">*</span>
+            </div>
+            <div class="select-wrapper">
+              <svg class="select-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              </svg>
+              <select 
+                formControlName="entrepotDestinationId" 
+                class="form-select"
+                [class.invalid]="transferForm.get('entrepotDestinationId')?.invalid && transferForm.get('entrepotDestinationId')?.touched"
+              >
+                <option [ngValue]="null">Sélectionner un entrepôt...</option>
+                <option *ngFor="let w of destWarehouses" [value]="w.id">
+                  {{ w.nom }} ({{ w.code }})
+                </option>
+              </select>
+            </div>
+            <span 
+              *ngIf="transferForm.get('entrepotDestinationId')?.invalid && transferForm.get('entrepotDestinationId')?.touched"
+              class="error-text"
+            >
+              Entrepôt destination requis
+            </span>
+          </div>
+        </div>
+
+        <!-- Transfer Date -->
+        <div class="form-group date-group">
+          <label class="form-label">
+            Date du transfert
+            <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <input 
+              type="date" 
+              formControlName="dateTransfert" 
+              class="form-input"
+            >
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary btn-lg" [disabled]="transferForm.invalid">
-        Valider le transfert
-      </button>
+    <!-- Products to Transfer Card -->
+    <div class="form-card products-card">
+      <div class="card-header">
+        <div class="header-left">
+          <svg class="card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          </svg>
+          <h2>Produits à transférer</h2>
+        </div>
+        <button type="button" class="btn-add-product" (click)="addProductLine()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Ajouter un produit</span>
+        </button>
+      </div>
+      
+      <div class="card-body products-body">
+        <div class="products-table-wrapper">
+          <table class="products-table">
+            <thead>
+              <tr>
+                <th class="col-product">Produit</th>
+                <th class="col-quantity">Quantité</th>
+                <th class="col-actions"></th>
+              </tr>
+            </thead>
+            <tbody formArrayName="lignes">
+              <tr *ngFor="let line of lignes.controls; let i=index" [formGroupName]="i" class="product-line">
+                <td class="col-product">
+                  <div class="select-wrapper select-compact">
+                    <select formControlName="produitId" class="form-select">
+                      <option [ngValue]="null">Choisir un produit...</option>
+                      <option *ngFor="let p of products" [value]="p.id">
+                        {{ p.nom }} (Ref: {{ p.reference }})
+                      </option>
+                    </select>
+                  </div>
+                </td>
+                <td class="col-quantity">
+                  <input 
+                    type="number" 
+                    formControlName="quantite" 
+                    class="form-input form-input-compact"
+                    min="1"
+                    placeholder="1"
+                  >
+                </td>
+                <td class="col-actions">
+                  <button 
+                    type="button" 
+                    class="btn-delete-line" 
+                    (click)="removeProductLine(i)"
+                    title="Supprimer"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      <line x1="10" y1="11" x2="10" y2="17"></line>
+                      <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="lignes.length === 0" class="empty-products">
+          <svg class="empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          </svg>
+          <p>Veuillez ajouter au moins un produit</p>
+          <button type="button" class="btn-add-first" (click)="addProductLine()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Ajouter le premier produit
+          </button>
+        </div>
+      </div>
     </div>
 
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button type="button" routerLink="/logistics/transfers" class="btn-cancel">
+        Annuler
+      </button>
+      <button 
+        type="submit" 
+        class="btn-submit" 
+        [disabled]="transferForm.invalid"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>Valider le transfert</span>
+      </button>
+    </div>
   </form>
 </div>

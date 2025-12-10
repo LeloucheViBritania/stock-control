@@ -9,6 +9,7 @@ export interface Client {
   email?: string;
   telephone?: string;
   ville?: string;
+  estActif?: boolean; 
 }
 
 export interface CommandeVente {

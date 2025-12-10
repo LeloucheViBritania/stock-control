@@ -5,7 +5,8 @@ import { SalesService } from '../../../../core/services/sales.service';
 
 @Component({
   selector: 'app-client-form',
-  templateUrl: './client-form.component.html'
+  templateUrl: './client-form.component.html',
+  styleUrls: ['./client-form.component.scss']
 ,
   standalone: false
 })

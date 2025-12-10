@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-purchase-order-create',
-  templateUrl: './purchase-order-create.component.html'
+  templateUrl: './purchase-order-create.component.html',
+  styleUrls: ['./purchase-order-create.component.scss']
 ,
   standalone: false
 })

@@ -1,53 +1,107 @@
-<div class="container-fluid">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Inventaire Produits</h2>
-    <a routerLink="/inventory/new" class="btn btn-primary">
-      <i class="icon-plus"></i> Nouveau Produit
-    </a>
+<div class="inventory-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <svg class="title-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+        </svg>
+        Inventaire Produits
+      </h1>
+      <a routerLink="/inventory/new" class="btn-new-product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>Nouveau Produit</span>
+      </a>
+    </div>
   </div>
 
-  <div class="card shadow-sm">
-    <div class="card-body p-0">
-      <table class="table table-hover mb-0">
-        <thead class="bg-light">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Chargement des produits...</p>
+  </div>
+
+  <!-- Products Table -->
+  <div *ngIf="!loading" class="products-card">
+    <div class="table-container">
+      <table class="products-table">
+        <thead>
           <tr>
-            <th>Réf</th>
-            <th>Nom</th>
+            <th>Référence</th>
+            <th>Nom du produit</th>
             <th>Catégorie</th>
-            <th class="text-end">Prix Vente</th>
+            <th class="text-right">Prix de vente</th>
             <th class="text-center">Stock</th>
-            <th class="text-end">Actions</th>
+            <th class="text-right">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let p of products">
-            <td><strong>{{ p.reference }}</strong></td>
-            <td>
-              {{ p.nom }}<br>
-              <small class="text-muted">{{ p.marque }}</small>
+          <tr *ngFor="let p of products" class="product-row">
+            <td class="ref-cell">
+              <span class="product-ref">{{ p.reference }}</span>
             </td>
-            <td>{{ p.categorie?.nom || '-' }}</td>
-            <td class="text-end">{{ p.prixVente | currency:'EUR' }}</td>
-            
-            <td class="text-center">
-              <span class="badge" 
-                [ngClass]="p.quantiteStock > p.niveauStockMin ? 'bg-success' : 'bg-danger'">
-                {{ p.quantiteStock }} {{ p.uniteMesure }}
+            <td class="name-cell">
+              <div class="product-name">{{ p.nom }}</div>
+              <div *ngIf="p.marque" class="product-brand">{{ p.marque }}</div>
+            </td>
+            <td class="category-cell">
+              <span class="category-badge">{{ p.categorie?.nom || '-' }}</span>
+            </td>
+            <td class="price-cell text-right">
+              <span class="product-price">{{ p.prixVente | currency:'EUR' }}</span>
+            </td>
+            <td class="stock-cell text-center">
+              <span 
+                class="stock-badge" 
+                [class.stock-ok]="p.quantiteStock > p.niveauStockMin"
+                [class.stock-low]="p.quantiteStock <= p.niveauStockMin && p.quantiteStock > 0"
+                [class.stock-empty]="p.quantiteStock === 0"
+              >
+                <span class="stock-value">{{ p.quantiteStock }}</span>
+                <span class="stock-unit">{{ p.uniteMesure }}</span>
               </span>
             </td>
-            
-            <td class="text-end">
-              <a [routerLink]="['/inventory/edit', p.id]" class="btn btn-sm btn-outline-secondary me-2">
-                <i class="icon-edit"></i>
-              </a>
-              <button (click)="deleteProduct(p.id)" class="btn btn-sm btn-outline-danger">
-                <i class="icon-trash"></i>
-              </button>
+            <td class="actions-cell text-right">
+              <div class="action-buttons">
+                <a [routerLink]="['/inventory/edit', p.id]" class="btn-action btn-edit" title="Modifier">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                </a>
+                <button (click)="deleteProduct(p.id)" class="btn-action btn-delete" title="Supprimer">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                  </svg>
+                </button>
+              </div>
             </td>
           </tr>
           
-          <tr *ngIf="!loading && products.length === 0">
-            <td colspan="6" class="text-center py-4">Aucun produit trouvé.</td>
+          <!-- Empty State -->
+          <tr *ngIf="products.length === 0" class="empty-row">
+            <td colspan="6">
+              <div class="empty-state">
+                <svg class="empty-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                </svg>
+                <h3>Aucun produit trouvé</h3>
+                <p>Commencez par ajouter votre premier produit</p>
+                <a routerLink="/inventory/new" class="btn-empty-action">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  Ajouter un produit
+                </a>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

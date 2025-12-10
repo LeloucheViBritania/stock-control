@@ -16,7 +16,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    DashboardComponent,
+   // DashboardComponent,
     DashboardHomeComponent
   ],
   imports: [

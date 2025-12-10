@@ -6,7 +6,8 @@ import { TierAbonnement } from '../../../../../shared/models/enums.model';
 
 @Component({
   selector: 'app-product-form',
-  templateUrl: './product-form.component.html'
+  templateUrl: './product-form.component.html',
+    styleUrls: ['./product-form.component.scss']
 ,
   standalone: false
 })

@@ -1,63 +1,97 @@
-<div class="wrapper">
-  
-  <nav class="sidebar">
+<div class="main-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
     <div class="sidebar-header">
-      <h3>StockControl</h3>
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          </svg>
+        </div>
+        <h3>StockControl</h3>
+      </div>
     </div>
 
-    <ul class="list-unstyled components">
-      <li>
-        <a routerLink="/dashboard" routerLinkActive="active">
-          <i class="icon-chart"></i> Tableau de bord
-        </a>
-      </li>
-      <li>
-        <a routerLink="/inventory" routerLinkActive="active">
-          <i class="icon-box"></i> Inventaire
-        </a>
-      </li>
-      <li>
-        <a routerLink="/purchases" routerLinkActive="active">
-          <i class="icon-cart"></i> Achats / Fournisseurs
-        </a>
-      </li>
-
-      <div *appIfPremium>
-        <li class="premium-menu-header">PREMIUM</li>
+    <nav class="sidebar-nav">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+            <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span>Tableau de bord</span>
+          </a>
+        </li>
         
-        <li>
-          <a routerLink="/logistics" routerLinkActive="active">
-            <i class="icon-truck"></i> Logistique
+        <li class="nav-item">
+          <a routerLink="/inventory" routerLinkActive="active" class="nav-link">
+            <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            </svg>
+            <span>Inventaire</span>
           </a>
         </li>
-        <li>
-          <a routerLink="/logistics/warehouses" routerLinkActive="active">
-            <i class="icon-home"></i> Entrepôts
+        
+        <li class="nav-item">
+          <a routerLink="/purchases" routerLinkActive="active" class="nav-link">
+            <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span>Achats / Fournisseurs</span>
           </a>
         </li>
-      </div>
-    </ul>
-  </nav>
 
-  <div class="content">
-    
-    <nav class="navbar navbar-light bg-light mb-4 shadow-sm">
-      <div class="container-fluid justify-content-end">
-        <div class="dropdown">
-          <button class="btn btn-link text-dark text-decoration-none" (click)="logout()">
-            <span *ngIf="authService.currentUser$ | async as user">
-              {{ user.nomUtilisateur }} 
-              <span class="badge bg-secondary">{{ user.tierAbonnement }}</span>
-            </span>
-            <i class="icon-logout ms-2"></i> Déconnexion
-          </button>
+        <div *appIfPremium>
+          <li class="nav-divider">
+            <span class="premium-badge">PREMIUM</span>
+          </li>
+          
+          <li class="nav-item">
+            <a routerLink="/logistics" routerLinkActive="active" class="nav-link">
+              <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+              </svg>
+              <span>Logistique</span>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a routerLink="/logistics/warehouses" routerLinkActive="active" class="nav-link">
+              <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <span>Entrepôts</span>
+            </a>
+          </li>
         </div>
+      </ul>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout-full" (click)="logout()" title="Déconnexion">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Déconnexion</span>
+        </button>
       </div>
     </nav>
+  </aside>
 
-    <div class="main-body">
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <div class="content-wrapper">
       <router-outlet></router-outlet>
     </div>
-    
-  </div>
+  </main>
 </div>

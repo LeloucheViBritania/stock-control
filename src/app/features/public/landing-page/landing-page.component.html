@@ -1,88 +1,118 @@
-<div class="landing-wrapper">
-  
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold text-primary" href="#">
-        <i class="icon-layers"></i> StockControl
-      </a>
-      <div class="d-flex">
-        <a routerLink="/auth/login" class="btn btn-outline-primary me-2">Se connecter</a>
-        <a routerLink="/auth/register" class="btn btn-primary">Créer un compte</a>
+<div class="landing-container">
+  <!-- Navigation Bar -->
+  <nav class="top-navbar">
+    <div class="nav-content">
+      <div class="brand">
+        <div class="brand-icon"></div>
+        <span class="brand-name">StockControl</span>
+      </div>
+      <div class="nav-actions">
+        <a routerLink="/auth/login" class="btn-ghost">Se connecter</a>
+        <a routerLink="/auth/register" class="btn-primary">Démarrer</a>
       </div>
     </div>
   </nav>
 
-  <header class="hero-section d-flex align-items-center">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6">
-          <h1 class="display-4 fw-bold mb-4">Gérez votre stock avec <span class="text-primary">précision</span>.</h1>
-          <p class="lead text-muted mb-4">
-            Une solution complète pour les PME et les entreprises en croissance. 
-            Suivez vos produits, gérez vos entrepôts et optimisez vos achats en temps réel.
-          </p>
-          <div class="d-flex gap-2">
-            <a routerLink="/auth/register" class="btn btn-primary btn-lg">Commencer Gratuitement</a>
-            <a href="#features" class="btn btn-outline-secondary btn-lg">En savoir plus</a>
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-grid">
+      <!-- Left Side - Hero Text -->
+      <div class="hero-section">
+        <h1 class="hero-title">
+          Gérez votre stock avec
+          <span class="highlight">précision</span>
+        </h1>
+        <p class="hero-description">
+          Solution complète pour suivre vos produits, gérer vos entrepôts 
+          et optimiser vos achats en temps réel.
+        </p>
+        <div class="cta-buttons">
+          <a routerLink="/auth/register" class="btn-cta-primary">
+            <span>Commencer Gratuitement</span>
+            <i class="arrow-icon">→</i>
+          </a>
+          <a routerLink="/demo" class="btn-cta-secondary">
+            <span>Voir la démo</span>
+          </a>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">2500+</div>
+            <div class="stat-label">Entreprises</div>
           </div>
-        </div>
-        <div class="col-lg-6 text-center">
-          <img src="https://cdn-icons-png.flaticon.com/512/2897/2897785.png" alt="Stock Dashboard" class="img-fluid hero-img floating-animation" style="max-width: 80%;">
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <section id="features" class="py-5 bg-light">
-    <div class="container py-5">
-      <div class="text-center mb-5">
-        <h2 class="fw-bold">Pourquoi choisir StockControl ?</h2>
-        <p class="text-muted">Des outils puissants adaptés à votre croissance.</p>
-      </div>
-
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm feature-card">
-            <div class="card-body text-center p-4">
-              <div class="icon-box bg-primary-subtle text-primary mb-3">
-                <i class="icon-chart fs-2"></i>
-              </div>
-              <h4>Tableau de Bord</h4>
-              <p class="text-muted">Visualisez vos indicateurs clés (KPIs) en un coup d'œil. Ventes, stock faible et valorisation.</p>
-            </div>
+          <div class="stat-item">
+            <div class="stat-value">99.9%</div>
+            <div class="stat-label">Disponibilité</div>
           </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm feature-card">
-            <div class="card-body text-center p-4">
-              <div class="icon-box bg-success-subtle text-success mb-3">
-                <i class="icon-home fs-2"></i>
-              </div>
-              <h4>Multi-Entrepôts <span class="badge bg-warning text-dark" style="font-size: 0.6em">PREMIUM</span></h4>
-              <p class="text-muted">Gérez plusieurs lieux de stockage. Transférez des marchandises facilement d'un dépôt à un autre.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm feature-card">
-            <div class="card-body text-center p-4">
-              <div class="icon-box bg-info-subtle text-info mb-3">
-                <i class="icon-people fs-2"></i>
-              </div>
-              <h4>Clients & Fournisseurs</h4>
-              <p class="text-muted">Centralisez votre carnet d'adresses et gérez vos bons de commande en quelques clics.</p>
-            </div>
+          <div class="stat-item">
+            <div class="stat-value">24/7</div>
+            <div class="stat-label">Support</div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <footer class="bg-dark text-white py-4">
-    <div class="container text-center">
-      <p class="mb-0">&copy; 2024 StockControl. Tous droits réservés.</p>
+      <!-- Right Side - Features Grid -->
+      <div class="features-section">
+        <div class="features-grid">
+          <div class="feature-card card-primary">
+            <div class="feature-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 3v18h18"/>
+                <path d="M18 17V9"/>
+                <path d="M13 17V5"/>
+                <path d="M8 17v-3"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">Tableau de Bord</h3>
+            <p class="feature-desc">KPIs en temps réel et valorisation du stock</p>
+          </div>
+
+          <div class="feature-card card-secondary">
+            <div class="feature-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">Multi-Entrepôts</h3>
+            <p class="feature-desc">Gérez plusieurs sites de stockage</p>
+          </div>
+
+          <div class="feature-card card-accent">
+            <div class="feature-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">Clients & Fournisseurs</h3>
+            <p class="feature-desc">Carnet d'adresses centralisé</p>
+          </div>
+
+          <div class="feature-card card-highlight">
+            <div class="feature-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">Export & Rapports</h3>
+            <p class="feature-desc">Exportez vos données en un clic</p>
+          </div>
+        </div>
+      </div>
     </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer-text">© 2024 StockControl - Tous droits réservés</p>
   </footer>
 </div>
