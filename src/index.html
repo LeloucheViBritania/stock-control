@@ -1,13 +1,60 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="utf-8">
-  <title>StockControl</title>
-  <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Gestion de Stock - Application de gestion d'inventaire</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Application de gestion de stock professionnelle avec gestion des produits, commandes, clients et fournisseurs.">
+  <meta name="keywords" content="gestion stock, inventaire, produits, commandes, fournisseurs">
+  <meta name="author" content="Votre Entreprise">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gestionstock.com/">
+  <meta property="og:title" content="Gestion de Stock">
+  <meta property="og:description" content="Application de gestion de stock professionnelle">
+  <meta property="og:image" content="/assets/images/og-image.png">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://gestionstock.com/">
+  <meta property="twitter:title" content="Gestion de Stock">
+  <meta property="twitter:description" content="Application de gestion de stock professionnelle">
+  
+  <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+  
+  <!-- Fonts - Inter & JetBrains Mono (load via CSS for better compatibility) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  </style>
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="msapplication-TileColor" content="#3b82f6">
+  
+  <!-- Base URL -->
+  <base href="/">
 </head>
-<body>
+<body class="antialiased">
+  <!-- Root Component -->
   <app-root></app-root>
+  
+  <!-- Loading Screen (affiché avant le chargement d'Angular) -->
+  <noscript>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Inter, sans-serif;">
+      <div style="text-align: center;">
+        <h1 style="color: #3b82f6; margin-bottom: 1rem;">Gestion de Stock</h1>
+        <p style="color: #64748b;">JavaScript est requis pour utiliser cette application.</p>
+      </div>
+    </div>
+  </noscript>
 </body>
 </html>

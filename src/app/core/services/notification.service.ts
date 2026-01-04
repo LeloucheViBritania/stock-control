@@ -1,82 +1,78 @@
+/**
+ * Service de notifications (toast)
+ */
 import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+export type NotificationType = 'success' | 'error' | 'warning' | 'info';
+
+export interface Notification {
+  id: string;
+  type: NotificationType;
+  message: string;
+  title?: string;
+  duration?: number;
+}
+
+export interface NotificationOptions {
+  title?: string;
+  duration?: number;
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
-  constructor(private toastr: ToastrService) {}
+  private readonly notificationsSubject = new BehaviorSubject<Notification[]>([]);
+  
+  notifications$: Observable<Notification[]> = this.notificationsSubject.asObservable();
 
-  /**
-   * Affiche une notification de succès
-   * @param message Le message à afficher
-   * @param title Le titre (optionnel)
-   */
-  success(message: string, title: string = 'Succès'): void {
-    this.toastr.success(message, title);
+  private generateId(): string {
+    return Math.random().toString(36).substring(2, 9);
   }
 
-  /**
-   * Affiche une notification d'erreur
-   * @param message Le message à afficher
-   * @param title Le titre (optionnel)
-   */
-  error(message: string, title: string = 'Erreur'): void {
-    this.toastr.error(message, title);
-  }
+  private show(type: NotificationType, message: string, options?: NotificationOptions): void {
+    const notification: Notification = {
+      id: this.generateId(),
+      type,
+      message,
+      title: options?.title,
+      duration: options?.duration || (type === 'error' ? 7000 : 5000),
+    };
 
-  /**
-   * Affiche une notification d'avertissement
-   * @param message Le message à afficher
-   * @param title Le titre (optionnel)
-   */
-  warning(message: string, title: string = 'Attention'): void {
-    this.toastr.warning(message, title);
-  }
+    const current = this.notificationsSubject.getValue();
+    this.notificationsSubject.next([...current, notification]);
 
-  /**
-   * Affiche une notification d'information
-   * @param message Le message à afficher
-   * @param title Le titre (optionnel)
-   */
-  info(message: string, title: string = 'Information'): void {
-    this.toastr.info(message, title);
-  }
-
-  /**
-   * Gère les erreurs HTTP et affiche un message approprié
-   * @param error L'erreur HTTP
-   * @param customMessage Message personnalisé (optionnel)
-   */
-  handleError(error: any, customMessage?: string): void {
-    let errorMessage = customMessage || 'Une erreur est survenue';
-
-    if (error.error?.message) {
-      errorMessage = error.error.message;
-    } else if (error.message) {
-      errorMessage = error.message;
-    } else if (error.status) {
-      switch (error.status) {
-        case 400:
-          errorMessage = 'Requête invalide';
-          break;
-        case 401:
-          errorMessage = 'Non autorisé. Veuillez vous reconnecter.';
-          break;
-        case 403:
-          errorMessage = 'Accès refusé';
-          break;
-        case 404:
-          errorMessage = 'Ressource non trouvée';
-          break;
-        case 500:
-          errorMessage = 'Erreur serveur. Veuillez réessayer plus tard.';
-          break;
-        default:
-          errorMessage = `Erreur ${error.status}: ${error.statusText}`;
-      }
+    // Auto-dismiss
+    if (notification.duration && notification.duration > 0) {
+      setTimeout(() => {
+        this.dismiss(notification.id);
+      }, notification.duration);
     }
+  }
 
-    this.error(errorMessage);
+  success(message: string, options?: NotificationOptions): void {
+    this.show('success', message, { title: options?.title || 'Succès', ...options });
+  }
+
+  error(message: string, options?: NotificationOptions): void {
+    this.show('error', message, { title: options?.title || 'Erreur', ...options });
+  }
+
+  warning(message: string, options?: NotificationOptions): void {
+    this.show('warning', message, { title: options?.title || 'Attention', ...options });
+  }
+
+  info(message: string, options?: NotificationOptions): void {
+    this.show('info', message, { title: options?.title, ...options });
+  }
+
+  dismiss(id: string): void {
+    const current = this.notificationsSubject.getValue();
+    this.notificationsSubject.next(current.filter(n => n.id !== id));
+  }
+
+  clear(): void {
+    this.notificationsSubject.next([]);
   }
 }

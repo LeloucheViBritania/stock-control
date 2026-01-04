@@ -1,59 +1,171 @@
-# StockControl
+# 📦 Gestion de Stock - Frontend Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.2.
+Application frontend Angular pour la gestion de stock avec système d'abonnement FREE/PREMIUM.
 
-## Development server
+![Angular](https://img.shields.io/badge/Angular-18-red?style=flat-square&logo=angular)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue?style=flat-square&logo=typescript)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?style=flat-square&logo=tailwind-css)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-To start a local development server, run:
+## 🚀 Fonctionnalités
 
-```bash
-ng serve
-```
+### 🆓 Fonctionnalités FREE
+- ✅ Gestion des produits, catégories, clients et fournisseurs
+- ✅ Commandes et mouvements de stock basiques
+- ✅ Dashboard et alertes de stock
+- ✅ Notifications en temps réel
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### 🔒 Fonctionnalités PREMIUM
+- 🏢 Multi-entrepôts et gestion des transferts
+- 📊 Rapports avancés et exports (PDF, Excel, CSV)
+- 📝 Journal d'audit complet
+- 📈 Prévisions et réapprovisionnement automatique
+- 🔍 Inventaire physique avec sessions de comptage
 
-## Code scaffolding
+## 📋 Prérequis
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Node.js** >= 18.0.0
+- **npm** >= 9.0.0
+- **Angular CLI** >= 18.0.0
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## 🛠️ Installation
 
 ```bash
-ng test
+# Cloner le repository
+git clone https://github.com/votre-repo/gestion-stock-frontend.git
+
+# Accéder au dossier
+cd gestion-stock-frontend
+
+# Installer les dépendances
+npm install
+
+# Copier le fichier d'environnement
+cp .env.example .env
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## 🏃 Démarrage
 
 ```bash
-ng e2e
+# Mode développement
+npm start
+
+# Mode production
+npm run build:prod
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+L'application sera accessible sur `http://localhost:4200`
 
-## Additional Resources
+## 📁 Structure du projet
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```
+src/
+├── app/
+│   ├── core/           # Services, guards, interceptors, models
+│   ├── shared/         # Composants, directives, pipes réutilisables
+│   └── features/       # Modules de fonctionnalités
+│       ├── auth/
+│       ├── dashboard/
+│       ├── produits/
+│       ├── categories/
+│       ├── clients/
+│       ├── fournisseurs/
+│       ├── commandes/
+│       ├── mouvements-stock/
+│       ├── entrepots/        [PREMIUM]
+│       ├── transferts-stock/ [PREMIUM]
+│       ├── inventaire/       [PREMIUM]
+│       ├── journal-audit/    [PREMIUM]
+│       └── rapports/         [PREMIUM]
+├── assets/
+├── environments/
+└── styles.scss
+```
+
+## 🔑 Comptes de test
+
+| Rôle | Utilisateur | Mot de passe | Tier |
+|------|-------------|--------------|------|
+| Admin | admin | admin123 | PREMIUM |
+| Gestionnaire | gestionnaire | gestionnaire123 | FREE |
+| Employé | employe | employe123 | FREE |
+
+## 🧪 Tests
+
+```bash
+# Tests unitaires
+npm test
+
+# Tests avec couverture
+npm run test:ci
+
+# Tests e2e
+npm run e2e
+```
+
+## 📦 Build
+
+```bash
+# Build de production
+npm run build:prod
+
+# Analyser la taille du bundle
+npm run analyze
+```
+
+## 🎨 Design System
+
+L'application utilise **TailwindCSS** avec un design system personnalisé :
+
+### Couleurs principales
+- `primary` - Bleu (#3B82F6)
+- `success` - Vert (#10B981)
+- `warning` - Orange (#F59E0B)
+- `danger` - Rouge (#EF4444)
+- `premium` - Or (#F59E0B)
+
+### États de stock
+- `stock-critical` - Rouge
+- `stock-low` - Orange
+- `stock-normal` - Vert
+- `stock-high` - Bleu
+
+## 🔌 API Backend
+
+Cette application se connecte à l'API NestJS de gestion de stock.
+
+**URL par défaut**: `http://localhost:3000/api`
+
+Documentation Swagger: `http://localhost:3000/api/docs`
+
+## 📝 Scripts disponibles
+
+| Script | Description |
+|--------|-------------|
+| `npm start` | Démarre le serveur de développement |
+| `npm run build` | Build de production |
+| `npm test` | Lance les tests unitaires |
+| `npm run lint` | Vérifie le code avec ESLint |
+| `npm run format` | Formate le code avec Prettier |
+
+## 🤝 Contribution
+
+1. Fork le projet
+2. Créer une branche (`git checkout -b feature/AmazingFeature`)
+3. Commit les changements (`git commit -m 'Add AmazingFeature'`)
+4. Push sur la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrir une Pull Request
+
+## 📄 License
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+## 📞 Support
+
+- 📧 Email: support@gestionstock.com
+- 📚 Documentation: https://docs.gestionstock.com
+- 🐛 Issues: https://github.com/votre-repo/issues
+
+---
+
+Développé avec ❤️ par Votre Entreprise
