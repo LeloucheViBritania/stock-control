@@ -28,7 +28,7 @@ export interface User {
 }
 
 export interface LoginCredentials {
-  identifiant: string;
+  email: string;
   password: string;
 }
 
