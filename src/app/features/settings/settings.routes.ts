@@ -2,6 +2,7 @@
  * Routes du module Paramètres
  */
 import { Routes } from '@angular/router';
+import { premiumGuard } from '@guards/premium.guard';
 
 export const SETTINGS_ROUTES: Routes = [
   {
@@ -28,5 +29,11 @@ export const SETTINGS_ROUTES: Routes = [
     path: 'users',
     loadComponent: () => import('./pages/users-management/users-management.component').then(m => m.UsersManagementComponent),
     data: { title: 'Gestion utilisateurs' },
+  },
+  {
+    path: 'import',
+    canActivate: [premiumGuard],
+    loadComponent: () => import('./pages/import-data/import-data.component').then(m => m.ImportDataComponent),
+    data: { title: 'Import de données', premium: true },
   },
 ];

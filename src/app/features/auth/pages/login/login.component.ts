@@ -34,16 +34,16 @@ import { NotificationService } from '@services/notification.service';
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
         <!-- Email -->
         <div>
-          <label for="email" class="form-label">Email</label>
+          <label for="identifiant" class="form-label">Email</label>
           <input
-            type="email"
-            id="email"
-            formControlName="email"
+            type="identifiant"
+            id="identifiant"
+            formControlName="identifiant"
             class="form-input"
-            [class.form-input-error]="form.get('email')?.invalid && form.get('email')?.touched"
+            [class.form-input-error]="form.get('identifiant')?.invalid && form.get('identifiant')?.touched"
             placeholder="votre@email.com"
           />
-          @if (form.get('email')?.invalid && form.get('email')?.touched) {
+          @if (form.get('identifiant')?.invalid && form.get('identifiant')?.touched) {
             <p class="form-error">Email invalide</p>
           }
         </div>
@@ -113,7 +113,7 @@ export class LoginComponent {
   isLoading = false;
 
   form: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    identifiant: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
     remember: [false],
   });
@@ -122,9 +122,9 @@ export class LoginComponent {
     if (this.form.invalid) return;
 
     this.isLoading = true;
-    const { email, password } = this.form.value;
+    const { identifiant, password } = this.form.value;
 
-    this.authService.login({ email, password }).subscribe({
+    this.authService.login({ identifiant, password }).subscribe({
       next: () => {
         this.notificationService.success('Connexion réussie !');
         this.router.navigate(['/dashboard']);

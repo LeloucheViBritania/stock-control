@@ -14,7 +14,7 @@ export const SUBSCRIPTION_ROUTES: Routes = [
     data: { title: 'Paiement' },
   },
   {
-    path: 'status',
+    path: 'statut',
     loadComponent: () => import('./pages/subscription-status/subscription-status.component').then(m => m.SubscriptionStatusComponent),
     data: { title: 'Mon abonnement' },
   },

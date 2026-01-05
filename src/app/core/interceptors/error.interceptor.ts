@@ -13,6 +13,18 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
+      // Ne pas afficher d'erreur pour le dashboard (il utilise des données mock)
+      const isDashboardRequest = req.url.includes('/dashboard/');
+      
+      // Ne pas afficher d'erreur pour les 401 (gestion silencieuse)
+      if (error.status === 401 || isDashboardRequest) {
+        return throwError(() => ({
+          status: error.status,
+          message: error.error?.message || 'Erreur',
+          originalError: error,
+        }));
+      }
+
       let errorMessage = 'Une erreur est survenue';
 
       if (error.error instanceof ErrorEvent) {
@@ -26,10 +38,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
           case 400:
             errorMessage = error.error?.message || 'Requête invalide';
-            break;
-          case 401:
-            // Géré par authInterceptor
-            errorMessage = 'Session expirée. Veuillez vous reconnecter.';
             break;
           case 403:
             errorMessage = 'Accès non autorisé';
@@ -55,7 +63,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
           case 500:
             errorMessage = 'Erreur serveur. Veuillez réessayer plus tard.';
-            router.navigate(['/erreur-serveur']);
             break;
           case 502:
           case 503:
@@ -67,10 +74,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         }
       }
 
-      // Afficher la notification sauf pour 401 (géré ailleurs)
-      if (error.status !== 401) {
-        notificationService.error(errorMessage);
-      }
+      // Afficher la notification
+      notificationService.error(errorMessage);
 
       return throwError(() => ({
         status: error.status,

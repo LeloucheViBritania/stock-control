@@ -28,7 +28,7 @@ export interface User {
 }
 
 export interface LoginCredentials {
-  email: string;
+  identifiant: string;
   password: string;
 }
 
@@ -129,11 +129,7 @@ export class AuthService {
    * Déconnexion
    */
   logout(): void {
-    // Appeler l'API de logout si nécessaire
-    this.http.post(`${environment.apiUrl}/auth/logout`, {}).pipe(
-      catchError(() => of(null))
-    ).subscribe();
-
+    // Nettoyer localement sans appeler l'API (le token expirera naturellement)
     this.clearAuth();
     this.router.navigate(['/auth/login']);
   }

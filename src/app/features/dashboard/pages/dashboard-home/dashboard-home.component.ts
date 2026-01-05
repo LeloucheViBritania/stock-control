@@ -322,6 +322,147 @@ import { LoadingSpinnerComponent } from '@components/ui/loading-spinner/loading-
           </div>
         </div>
 
+        <!-- Section PREMIUM -->
+        @if (isPremium()) {
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Widget Entrepôts -->
+            <div class="card p-6">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <h3 class="font-semibold text-gray-900 dark:text-white">Mes entrepôts</h3>
+                  <span class="badge-premium text-xs">Premium</span>
+                </div>
+                <a routerLink="/entrepots" class="text-sm text-primary-600 hover:underline">Gérer</a>
+              </div>
+              <div class="space-y-3">
+                @for (entrepot of entrepotsStats(); track entrepot.id) {
+                  <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="font-medium text-gray-900 dark:text-white">{{ entrepot.nom }}</span>
+                      <span class="text-sm text-gray-500">{{ entrepot.tauxRemplissage | number:'1.0-0' }}%</span>
+                    </div>
+                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                      <div 
+                        class="h-full rounded-full transition-all"
+                        [class.bg-success-500]="entrepot.tauxRemplissage < 70"
+                        [class.bg-warning-500]="entrepot.tauxRemplissage >= 70 && entrepot.tauxRemplissage < 90"
+                        [class.bg-danger-500]="entrepot.tauxRemplissage >= 90"
+                        [style.width.%]="entrepot.tauxRemplissage"
+                      ></div>
+                    </div>
+                    <div class="flex justify-between mt-1 text-xs text-gray-500">
+                      <span>{{ entrepot.stockActuel | number }} produits</span>
+                      <span>{{ entrepot.valeur | number:'1.0-0' }} €</span>
+                    </div>
+                  </div>
+                } @empty {
+                  <a routerLink="/entrepots/nouveau" class="block p-4 border-2 border-dashed border-gray-300 rounded-lg text-center hover:border-primary-500 transition-colors">
+                    <svg class="w-8 h-8 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span class="text-sm text-gray-500">Ajouter un entrepôt</span>
+                  </a>
+                }
+              </div>
+            </div>
+
+            <!-- Widget Prévisions IA -->
+            <div class="card p-6">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <h3 class="font-semibold text-gray-900 dark:text-white">Prévisions IA</h3>
+                  <span class="badge-premium text-xs">Premium</span>
+                </div>
+                <a routerLink="/previsions" class="text-sm text-primary-600 hover:underline">Voir plus</a>
+              </div>
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="p-3 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-lg">
+                  <p class="text-xs text-primary-600 dark:text-primary-400">Tendance ventes</p>
+                  <div class="flex items-center gap-2 mt-1">
+                    <svg class="w-5 h-5 text-success-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                    </svg>
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">+15%</span>
+                  </div>
+                </div>
+                <div class="p-3 bg-gradient-to-br from-warning-50 to-warning-100 dark:from-warning-900/20 dark:to-warning-800/20 rounded-lg">
+                  <p class="text-xs text-warning-600 dark:text-warning-400">Alertes stock</p>
+                  <div class="flex items-center gap-2 mt-1">
+                    <svg class="w-5 h-5 text-warning-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">{{ previsionAlertes() }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <p class="text-sm text-gray-600 dark:text-gray-400">Recommandations urgentes :</p>
+                @for (reco of recommandationsUrgentes(); track reco.produit) {
+                  <div class="flex items-center justify-between p-2 bg-danger-50 dark:bg-danger-900/20 rounded text-sm">
+                    <span class="text-danger-700 dark:text-danger-400">{{ reco.produit }}</span>
+                    <span class="font-medium text-danger-600">Commander {{ reco.quantite }} u.</span>
+                  </div>
+                } @empty {
+                  <p class="text-sm text-success-600 py-2">✓ Aucune action urgente</p>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Transferts en cours -->
+          <div class="card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2">
+                <h3 class="font-semibold text-gray-900 dark:text-white">Transferts en cours</h3>
+                <span class="badge-premium text-xs">Premium</span>
+              </div>
+              <a routerLink="/transferts-stock" class="text-sm text-primary-600 hover:underline">Voir tous</a>
+            </div>
+            @if (transfertsEnCours().length > 0) {
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead>
+                    <tr class="text-left text-sm text-gray-500">
+                      <th class="pb-3 font-medium">N° Transfert</th>
+                      <th class="pb-3 font-medium">De → Vers</th>
+                      <th class="pb-3 font-medium text-center">Articles</th>
+                      <th class="pb-3 font-medium text-center">Statut</th>
+                      <th class="pb-3 font-medium text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                    @for (t of transfertsEnCours(); track t.id) {
+                      <tr>
+                        <td class="py-3 font-medium text-gray-900 dark:text-white">{{ t.numero }}</td>
+                        <td class="py-3 text-gray-600">{{ t.source }} → {{ t.destination }}</td>
+                        <td class="py-3 text-center">{{ t.articles }}</td>
+                        <td class="py-3 text-center">
+                          <span class="px-2 py-1 text-xs font-medium rounded-full"
+                            [class.bg-warning-100]="t.statut === 'EN_ATTENTE'"
+                            [class.text-warning-700]="t.statut === 'EN_ATTENTE'"
+                            [class.bg-primary-100]="t.statut === 'EN_COURS'"
+                            [class.text-primary-700]="t.statut === 'EN_COURS'"
+                          >
+                            {{ t.statut === 'EN_ATTENTE' ? 'En attente' : 'En transit' }}
+                          </span>
+                        </td>
+                        <td class="py-3 text-right">
+                          <a [routerLink]="['/transferts-stock', t.id]" class="text-primary-600 hover:underline text-sm">Voir</a>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            } @else {
+              <div class="text-center py-6 text-gray-500">
+                <p>Aucun transfert en cours</p>
+                <a routerLink="/transferts-stock/nouveau" class="text-primary-600 hover:underline text-sm">Créer un transfert</a>
+              </div>
+            }
+          </div>
+        }
+
         <!-- Teaser Premium -->
         @if (!isPremium()) {
           <div class="card p-6 bg-gradient-to-r from-warning-50 to-warning-100 dark:from-warning-900/20 dark:to-warning-800/20 border-warning-200 dark:border-warning-800">
@@ -361,11 +502,42 @@ export class DashboardHomeComponent implements OnInit {
   isLoading = signal(true);
   selectedPeriode: 'semaine' | 'mois' | 'trimestre' | 'annee' = 'mois';
 
+  // Signaux PREMIUM
+  entrepotsStats = signal<any[]>([]);
+  transfertsEnCours = signal<any[]>([]);
+  previsionAlertes = signal(0);
+  recommandationsUrgentes = signal<any[]>([]);
+
   isPremium = computed(() => this.authService.isPremium());
   userName = computed(() => this.authService.user()?.prenom);
 
   ngOnInit(): void {
     this.loadStats();
+    if (this.isPremium()) {
+      this.loadPremiumData();
+    }
+  }
+
+  loadPremiumData(): void {
+    // Mock data pour entrepôts
+    this.entrepotsStats.set([
+      { id: '1', nom: 'Paris Central', tauxRemplissage: 78, stockActuel: 1250, valeur: 185000 },
+      { id: '2', nom: 'Lyon Sud', tauxRemplissage: 45, stockActuel: 680, valeur: 95000 },
+      { id: '3', nom: 'Marseille', tauxRemplissage: 92, stockActuel: 890, valeur: 125000 },
+    ]);
+
+    // Mock data pour transferts en cours
+    this.transfertsEnCours.set([
+      { id: '1', numero: 'TR-2024-042', source: 'Paris', destination: 'Lyon', articles: 25, statut: 'EN_COURS' },
+      { id: '2', numero: 'TR-2024-043', source: 'Lyon', destination: 'Marseille', articles: 12, statut: 'EN_ATTENTE' },
+    ]);
+
+    // Mock data pour prévisions
+    this.previsionAlertes.set(5);
+    this.recommandationsUrgentes.set([
+      { produit: 'Écran LCD 24"', quantite: 50 },
+      { produit: 'Clavier sans fil', quantite: 100 },
+    ]);
   }
 
   loadStats(): void {

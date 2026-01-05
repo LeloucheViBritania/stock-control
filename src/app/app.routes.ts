@@ -202,6 +202,45 @@ export const routes: Routes = [
       },
 
       // ============================================
+      // ALERTES STOCK [PREMIUM]
+      // ============================================
+      {
+        path: 'alertes-stock',
+        canActivate: [premiumGuard],
+        loadChildren: () => import('@features/alertes-stock/alertes-stock.routes').then(m => m.ALERTES_STOCK_ROUTES),
+        data: { 
+          title: 'Alertes Stock',
+          premium: true,
+        },
+      },
+
+      // ============================================
+      // TRAÇABILITÉ DES LOTS [PREMIUM]
+      // ============================================
+      {
+        path: 'lots',
+        canActivate: [premiumGuard],
+        loadChildren: () => import('@features/lots-tracabilite/lots-tracabilite.routes').then(m => m.LOTS_TRACABILITE_ROUTES),
+        data: { 
+          title: 'Traçabilité des Lots',
+          premium: true,
+        },
+      },
+
+      // ============================================
+      // INTÉGRATIONS & API [PREMIUM]
+      // ============================================
+      {
+        path: 'integrations',
+        canActivate: [premiumGuard],
+        loadChildren: () => import('@features/integrations/integrations.routes').then(m => m.INTEGRATIONS_ROUTES),
+        data: { 
+          title: 'Intégrations & API',
+          premium: true,
+        },
+      },
+
+      // ============================================
       // ABONNEMENT
       // ============================================
       {
