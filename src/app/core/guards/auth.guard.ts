@@ -1,23 +1,32 @@
-/**
- * Guard d'authentification
- * Protège les routes nécessitant une connexion
- */
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '@services/auth.service';
+import { Router, CanActivateFn } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.authenticated()) {
+  if (authService.isAuthenticated()) {
     return true;
   }
 
-  // Rediriger vers la page de login avec l'URL de retour
-  router.navigate(['/auth/login'], {
-    queryParams: { returnUrl: state.url },
+  // Store the attempted URL for redirecting after login
+  router.navigate(['/auth/login'], { 
+    queryParams: { returnUrl: state.url } 
   });
+  
+  return false;
+};
 
+export const noAuthGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (!authService.isAuthenticated()) {
+    return true;
+  }
+
+  // Already logged in, redirect to dashboard
+  router.navigate(['/dashboard']);
   return false;
 };

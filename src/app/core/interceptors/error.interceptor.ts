@@ -1,37 +1,24 @@
-/**
- * Intercepteur de gestion des erreurs HTTP
- */
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
-import { NotificationService } from '@services/notification.service';
+import { AuthService } from '../services/auth.service';
+import { ToastService } from '../services/notifications.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  const notificationService = inject(NotificationService);
   const router = inject(Router);
+  const authService = inject(AuthService);
+  const toastService = inject(ToastService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Ne pas afficher d'erreur pour le dashboard (il utilise des données mock)
-      const isDashboardRequest = req.url.includes('/dashboard/');
-      
-      // Ne pas afficher d'erreur pour les 401 (gestion silencieuse)
-      if (error.status === 401 || isDashboardRequest) {
-        return throwError(() => ({
-          status: error.status,
-          message: error.error?.message || 'Erreur',
-          originalError: error,
-        }));
-      }
-
       let errorMessage = 'Une erreur est survenue';
 
       if (error.error instanceof ErrorEvent) {
-        // Erreur côté client
+        // Client-side error
         errorMessage = error.error.message;
       } else {
-        // Erreur côté serveur
+        // Server-side error
         switch (error.status) {
           case 0:
             errorMessage = 'Impossible de contacter le serveur. Vérifiez votre connexion.';
@@ -39,9 +26,17 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           case 400:
             errorMessage = error.error?.message || 'Requête invalide';
             break;
+          case 401:
+            errorMessage = 'Session expirée. Veuillez vous reconnecter.';
+            authService.logout();
+            router.navigate(['/auth/login']);
+            break;
           case 403:
             errorMessage = 'Accès non autorisé';
-            router.navigate(['/acces-refuse']);
+            if (error.error?.message?.includes('premium')) {
+              errorMessage = 'Cette fonctionnalité nécessite un abonnement Premium';
+              router.navigate(['/subscription']);
+            }
             break;
           case 404:
             errorMessage = error.error?.message || 'Ressource non trouvée';
@@ -50,13 +45,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             errorMessage = error.error?.message || 'Conflit de données';
             break;
           case 422:
-            // Erreurs de validation
-            if (error.error?.errors) {
-              const validationErrors = Object.values(error.error.errors).flat();
-              errorMessage = validationErrors.join(', ');
-            } else {
-              errorMessage = error.error?.message || 'Données invalides';
-            }
+            errorMessage = error.error?.message || 'Données invalides';
             break;
           case 429:
             errorMessage = 'Trop de requêtes. Veuillez patienter.';
@@ -74,14 +63,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         }
       }
 
-      // Afficher la notification
-      notificationService.error(errorMessage);
+      // Show toast for errors (except 401 which redirects)
+      if (error.status !== 401) {
+        toastService.error(errorMessage);
+      }
 
-      return throwError(() => ({
-        status: error.status,
-        message: errorMessage,
-        originalError: error,
-      }));
+      return throwError(() => ({ ...error, friendlyMessage: errorMessage }));
     })
   );
 };

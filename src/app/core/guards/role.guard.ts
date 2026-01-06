@@ -1,38 +1,67 @@
-/**
- * Guard de contrôle des rôles
- * Vérifie que l'utilisateur a le rôle requis
- */
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '@services/auth.service';
-import { Role } from '@enums/role.enum';
+import { Router, CanActivateFn } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { ToastService } from '../services/notifications.service';
+import { Role } from '../models';
 
 export const roleGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const toastService = inject(ToastService);
 
-  // Vérifier d'abord l'authentification
-  if (!authService.authenticated()) {
-    router.navigate(['/auth/login'], {
-      queryParams: { returnUrl: state.url },
-    });
-    return false;
-  }
-
-  // Récupérer les rôles requis depuis les données de route
-  const requiredRoles = route.data?.['roles'] as Role[] | undefined;
-
-  // Si aucun rôle n'est requis, autoriser
+  const requiredRoles = route.data['roles'] as Role[];
+  
   if (!requiredRoles || requiredRoles.length === 0) {
     return true;
   }
 
-  // Vérifier si l'utilisateur a un des rôles requis
-  if (authService.hasRole(requiredRoles)) {
+  const user = authService.currentUser();
+  
+  if (!user) {
+    router.navigate(['/auth/login']);
+    return false;
+  }
+
+  // Admin has access to everything
+  if (user.role === Role.ADMIN) {
     return true;
   }
 
-  // Accès refusé
-  router.navigate(['/acces-refuse']);
+  // Check if user has required role
+  if (requiredRoles.includes(user.role)) {
+    return true;
+  }
+
+  // User doesn't have required role
+  toastService.error('Vous n\'avez pas les permissions nécessaires pour accéder à cette page.');
+  router.navigate(['/dashboard']);
+  return false;
+};
+
+export const adminGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const toastService = inject(ToastService);
+
+  if (authService.isAdmin()) {
+    return true;
+  }
+
+  toastService.error('Accès réservé aux administrateurs.');
+  router.navigate(['/dashboard']);
+  return false;
+};
+
+export const gestionnaireGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const toastService = inject(ToastService);
+
+  if (authService.isGestionnaire()) {
+    return true;
+  }
+
+  toastService.error('Accès réservé aux gestionnaires et administrateurs.');
+  router.navigate(['/dashboard']);
   return false;
 };

@@ -1,171 +1,152 @@
-# 📦 Gestion de Stock - Frontend Angular
+# Stock Control Frontend
 
-Application frontend Angular pour la gestion de stock avec système d'abonnement FREE/PREMIUM.
+Application Angular 18 pour la gestion de stock avec système SaaS (GRATUIT/PREMIUM).
 
-![Angular](https://img.shields.io/badge/Angular-18-red?style=flat-square&logo=angular)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue?style=flat-square&logo=typescript)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?style=flat-square&logo=tailwind-css)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-
-## 🚀 Fonctionnalités
-
-### 🆓 Fonctionnalités FREE
-- ✅ Gestion des produits, catégories, clients et fournisseurs
-- ✅ Commandes et mouvements de stock basiques
-- ✅ Dashboard et alertes de stock
-- ✅ Notifications en temps réel
-
-### 🔒 Fonctionnalités PREMIUM
-- 🏢 Multi-entrepôts et gestion des transferts
-- 📊 Rapports avancés et exports (PDF, Excel, CSV)
-- 📝 Journal d'audit complet
-- 📈 Prévisions et réapprovisionnement automatique
-- 🔍 Inventaire physique avec sessions de comptage
-
-## 📋 Prérequis
-
-- **Node.js** >= 18.0.0
-- **npm** >= 9.0.0
-- **Angular CLI** >= 18.0.0
-
-## 🛠️ Installation
+## 🚀 Démarrage rapide
 
 ```bash
-# Cloner le repository
-git clone https://github.com/votre-repo/gestion-stock-frontend.git
+# Installation des dépendances
+npm install --legacy-peer-deps
 
-# Accéder au dossier
-cd gestion-stock-frontend
-
-# Installer les dépendances
-npm install
-
-# Copier le fichier d'environnement
-cp .env.example .env
-```
-
-## 🏃 Démarrage
-
-```bash
-# Mode développement
+# Lancer en développement
 npm start
 
-# Mode production
-npm run build:prod
+# Build production
+npm run build
 ```
 
 L'application sera accessible sur `http://localhost:4200`
 
+## 🔐 Comptes de test
+
+| Rôle | Identifiant | Mot de passe | Tier |
+|------|-------------|--------------|------|
+| Admin | admin | admin123 | PREMIUM |
+| Gestionnaire | gestionnaire | gestionnaire123 | GRATUIT |
+| Employé | employe | employe123 | GRATUIT |
+
 ## 📁 Structure du projet
 
 ```
-src/
-├── app/
-│   ├── core/           # Services, guards, interceptors, models
-│   ├── shared/         # Composants, directives, pipes réutilisables
-│   └── features/       # Modules de fonctionnalités
-│       ├── auth/
-│       ├── dashboard/
-│       ├── produits/
-│       ├── categories/
-│       ├── clients/
-│       ├── fournisseurs/
-│       ├── commandes/
-│       ├── mouvements-stock/
-│       ├── entrepots/        [PREMIUM]
-│       ├── transferts-stock/ [PREMIUM]
-│       ├── inventaire/       [PREMIUM]
-│       ├── journal-audit/    [PREMIUM]
-│       └── rapports/         [PREMIUM]
-├── assets/
-├── environments/
-└── styles.scss
+src/app/
+├── core/
+│   ├── guards/          # Auth, Premium, Role guards
+│   ├── interceptors/    # Auth, Error, Loading
+│   ├── models/          # 40+ interfaces TypeScript
+│   └── services/        # 17 services API
+├── shared/
+│   └── components/      # Toast, Pagination, ConfirmModal
+├── features/
+│   ├── auth/            # Login, Register, ForgotPassword, Profil
+│   ├── dashboard/       # KPIs et statistiques
+│   ├── produits/        # CRUD produits
+│   ├── categories/      # CRUD catégories
+│   ├── clients/         # CRUD clients
+│   ├── fournisseurs/    # CRUD fournisseurs
+│   ├── commandes/       # Gestion commandes
+│   ├── mouvements-stock/# Historique mouvements
+│   ├── subscription/    # Toggle Premium (activation/désactivation)
+│   ├── entrepots/       # [PREMIUM] Multi-entrepôts
+│   ├── inventaire/      # [PREMIUM] Stock par entrepôt
+│   ├── inventaire-physique/ # [PREMIUM] Sessions comptage
+│   ├── transferts-stock/# [PREMIUM] Transferts inter-entrepôts
+│   ├── previsions/      # [PREMIUM] Prévisions demande
+│   ├── reapprovisionnement/ # [PREMIUM] Suggestions réappro
+│   ├── rapports/        # [PREMIUM] Génération rapports PDF
+│   ├── journal-audit/   # [PREMIUM] Logs activité
+│   └── utilisateurs/    # [ADMIN] Gestion utilisateurs
+└── layouts/
+    └── main-layout/     # Sidebar, Header, Navigation
 ```
 
-## 🔑 Comptes de test
+## 🎯 Fonctionnalités
 
-| Rôle | Utilisateur | Mot de passe | Tier |
-|------|-------------|--------------|------|
-| Admin | admin | admin123 | PREMIUM |
-| Gestionnaire | gestionnaire | gestionnaire123 | FREE |
-| Employé | employe | employe123 | FREE |
+### Modules GRATUITS
+- ✅ **Produits** - CRUD complet avec gestion stock
+- ✅ **Catégories** - Organisation hiérarchique
+- ✅ **Clients** - Gestion clientèle avec segments
+- ✅ **Fournisseurs** - Gestion fournisseurs avec évaluations
+- ✅ **Commandes** - Workflow complet (création → livraison)
+- ✅ **Mouvements Stock** - Historique entrées/sorties
+- ✅ **Dashboard** - KPIs temps réel
 
-## 🧪 Tests
+### Modules PREMIUM
+- ⭐ **Entrepôts** - Gestion multi-sites
+- ⭐ **Inventaire** - Stock par emplacement
+- ⭐ **Inventaire Physique** - Sessions de comptage
+- ⭐ **Transferts Stock** - Mouvements inter-entrepôts
+- ⭐ **Prévisions** - Analyse prédictive demande
+- ⭐ **Réapprovisionnement** - Suggestions automatiques
+- ⭐ **Rapports** - Génération PDF/Excel
+- ⭐ **Journal Audit** - Traçabilité complète
 
-```bash
-# Tests unitaires
-npm test
+### Module ADMIN
+- 🔒 **Utilisateurs** - Gestion comptes et rôles
 
-# Tests avec couverture
-npm run test:ci
+## 🔧 Configuration
 
-# Tests e2e
-npm run e2e
+### Environnement
+```typescript
+// src/environments/environment.ts
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api'
+};
 ```
 
-## 📦 Build
-
-```bash
-# Build de production
-npm run build:prod
-
-# Analyser la taille du bundle
-npm run analyze
-```
+### API Backend
+Le frontend communique avec l'API NestJS sur le port 3000.
+Assurez-vous que le backend est démarré avant de lancer le frontend.
 
 ## 🎨 Design System
 
-L'application utilise **TailwindCSS** avec un design system personnalisé :
+- **Framework CSS** : SCSS personnalisé avec variables CSS
+- **Icônes** : Phosphor Icons
+- **Typographie** : DM Sans, Space Grotesk, JetBrains Mono
+- **Couleurs** : Palette primary/success/warning/error/info
+- **Composants** : Cards, Tables, Forms, Modals, Badges, Buttons
 
-### Couleurs principales
-- `primary` - Bleu (#3B82F6)
-- `success` - Vert (#10B981)
-- `warning` - Orange (#F59E0B)
-- `danger` - Rouge (#EF4444)
-- `premium` - Or (#F59E0B)
+## 📊 Fonctionnalités techniques
 
-### États de stock
-- `stock-critical` - Rouge
-- `stock-low` - Orange
-- `stock-normal` - Vert
-- `stock-high` - Bleu
+- **Angular 18** avec standalone components
+- **Signals** pour la gestion d'état réactif
+- **Lazy loading** des modules
+- **Guards** pour protection des routes
+- **Interceptors** pour auth et gestion erreurs
+- **RxJS** pour les flux asynchrones
+- **Chart.js** prêt pour les graphiques
 
-## 🔌 API Backend
+## 🔒 Sécurité
 
-Cette application se connecte à l'API NestJS de gestion de stock.
+- JWT stocké en localStorage
+- Auto-refresh du token
+- Protection des routes par rôle
+- Protection des modules Premium
+- Interceptor d'erreurs global
 
-**URL par défaut**: `http://localhost:3000/api`
+## 📱 Responsive
 
-Documentation Swagger: `http://localhost:3000/api/docs`
+- Desktop : Sidebar complète
+- Tablet : Sidebar collapsible
+- Mobile : Sidebar overlay
 
-## 📝 Scripts disponibles
+## 🛠️ Scripts disponibles
 
-| Script | Description |
-|--------|-------------|
-| `npm start` | Démarre le serveur de développement |
-| `npm run build` | Build de production |
-| `npm test` | Lance les tests unitaires |
-| `npm run lint` | Vérifie le code avec ESLint |
-| `npm run format` | Formate le code avec Prettier |
+```bash
+npm start       # Démarre le serveur de dev
+npm run build   # Build production
+npm run watch   # Build avec watch
+npm test        # Lance les tests
+```
 
-## 🤝 Contribution
+## 📝 Notes
 
-1. Fork le projet
-2. Créer une branche (`git checkout -b feature/AmazingFeature`)
-3. Commit les changements (`git commit -m 'Add AmazingFeature'`)
-4. Push sur la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
+- Le système Premium est un simple toggle (activation/désactivation)
+- Pas de système de paiement implémenté
+- Les données de test sont gérées par le backend
+- WebSocket prêt pour les notifications temps réel
 
-## 📄 License
+## 🔗 Liens
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
-
-## 📞 Support
-
-- 📧 Email: support@gestionstock.com
-- 📚 Documentation: https://docs.gestionstock.com
-- 🐛 Issues: https://github.com/votre-repo/issues
-
----
-
-Développé avec ❤️ par Votre Entreprise
+- **API Backend** : http://localhost:3000/api
+- **Documentation API** : http://localhost:3000/api/docs (Swagger)

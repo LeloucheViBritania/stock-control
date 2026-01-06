@@ -1,21 +1,9 @@
-/**
- * Routes du module Abonnement
- */
 import { Routes } from '@angular/router';
 
 export const SUBSCRIPTION_ROUTES: Routes = [
   {
     path: '',
-    loadComponent: () => import('./pages/plans/plans.component').then(m => m.PlansComponent),
-  },
-  {
-    path: 'checkout',
-    loadComponent: () => import('./pages/checkout/checkout.component').then(m => m.CheckoutComponent),
-    data: { title: 'Paiement' },
-  },
-  {
-    path: 'statut',
-    loadComponent: () => import('./pages/subscription-status/subscription-status.component').then(m => m.SubscriptionStatusComponent),
-    data: { title: 'Mon abonnement' },
-  },
+    loadComponent: () => import('./subscription.component').then(m => m.SubscriptionComponent),
+    title: 'Gestion Premium'
+  }
 ];

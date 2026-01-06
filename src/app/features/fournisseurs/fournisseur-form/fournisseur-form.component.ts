@@ -1,0 +1,137 @@
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { FournisseursService } from '@core/services/fournisseurs.service';
+import { ToastService } from '@core/services/notifications.service';
+
+@Component({
+  selector: 'app-fournisseur-form',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  template: `
+    <div class="form-page" style="max-width: 800px;">
+      <div class="page-header">
+        <a routerLink="/fournisseurs" class="back-link"><i class="ph ph-arrow-left"></i></a>
+        <div><h1>{{ isEditMode() ? 'Modifier le fournisseur' : 'Nouveau fournisseur' }}</h1></div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="card mb-6">
+          <div class="card__header"><h3 class="card__title"><i class="ph ph-truck"></i> Informations générales</h3></div>
+          <div class="card__body">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-group__label">Nom *</label>
+                <input type="text" formControlName="nom" class="form-control" [class.form-control--error]="isFieldInvalid('nom')" placeholder="Nom du fournisseur" />
+              </div>
+              <div class="form-group">
+                <label class="form-group__label">SIRET</label>
+                <input type="text" formControlName="siret" class="form-control" placeholder="N° SIRET" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-group__label">Email</label>
+                <input type="email" formControlName="email" class="form-control" placeholder="email@fournisseur.com" />
+              </div>
+              <div class="form-group">
+                <label class="form-group__label">Téléphone</label>
+                <input type="text" formControlName="telephone" class="form-control" placeholder="+225 XX XX XX XX" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-group__label">Adresse</label>
+              <textarea formControlName="adresse" class="form-control" rows="2" placeholder="Adresse complète"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-group__label">Contact principal</label>
+                <input type="text" formControlName="contactPrincipal" class="form-control" placeholder="Nom du contact" />
+              </div>
+              <div class="form-group">
+                <label class="form-group__label">Délai de livraison (jours)</label>
+                <input type="number" formControlName="delaiLivraisonMoyen" class="form-control" min="0" placeholder="0" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-group__label">Notes</label>
+              <textarea formControlName="notes" class="form-control" rows="2" placeholder="Notes internes..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-check">
+                <input type="checkbox" formControlName="estActif" />
+                <span class="form-check__label">Fournisseur actif</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a routerLink="/fournisseurs" class="btn btn--secondary">Annuler</a>
+          <button type="submit" class="btn btn--primary" [disabled]="form.invalid || isSubmitting()">
+            @if (isSubmitting()) { <span class="spinner spinner--sm"></span> }
+            {{ isEditMode() ? 'Enregistrer' : 'Créer' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  `,
+  styles: [`
+    .page-header { display: flex; gap: var(--space-4); margin-bottom: var(--space-6); }
+    .back-link { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: var(--radius-lg); background: var(--neutral-100); &:hover { background: var(--neutral-200); } }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+    .form-actions { display: flex; justify-content: flex-end; gap: var(--space-3); }
+    @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
+  `]
+})
+export class FournisseurFormComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private fournisseursService = inject(FournisseursService);
+  private toast = inject(ToastService);
+
+  form!: FormGroup;
+  isEditMode = signal(false);
+  isSubmitting = signal(false);
+
+  ngOnInit() {
+    this.form = this.fb.group({
+      nom: ['', Validators.required],
+      siret: [''],
+      email: ['', Validators.email],
+      telephone: [''],
+      adresse: [''],
+      contactPrincipal: [''],
+      delaiLivraisonMoyen: [null],
+      notes: [''],
+      estActif: [true]
+    });
+
+    const id = this.route.snapshot.params['id'];
+    if (id) { this.isEditMode.set(true); this.loadFournisseur(+id); }
+  }
+
+  loadFournisseur(id: number) {
+    this.fournisseursService.getById(id).subscribe({
+      next: (f) => this.form.patchValue(f),
+      error: () => { this.toast.error('Erreur', 'Fournisseur introuvable'); this.router.navigate(['/fournisseurs']); }
+    });
+  }
+
+  isFieldInvalid(field: string): boolean { const c = this.form.get(field); return c ? c.invalid && c.touched : false; }
+
+  onSubmit() {
+    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    this.isSubmitting.set(true);
+    const data = this.form.value;
+    const id = this.route.snapshot.params['id'];
+
+    const request$ = this.isEditMode() ? this.fournisseursService.update(+id, data) : this.fournisseursService.create(data);
+    request$.subscribe({
+      next: (f) => { this.toast.success(this.isEditMode() ? 'Fournisseur modifié' : 'Fournisseur créé'); this.router.navigate(['/fournisseurs', f.id]); },
+      error: (err) => { this.isSubmitting.set(false); this.toast.error('Erreur', err.error?.message); }
+    });
+  }
+}

@@ -1,21 +1,19 @@
-/**
- * Routes du module Catégories
- */
 import { Routes } from '@angular/router';
 
 export const CATEGORIES_ROUTES: Routes = [
   {
     path: '',
-    loadComponent: () => import('./pages/categories-list/categories-list.component').then(m => m.CategoriesListComponent),
+    loadComponent: () => import('./categories-list/categories-list.component').then(m => m.CategoriesListComponent),
+    title: 'Catégories'
   },
   {
-    path: 'nouveau',
-    loadComponent: () => import('./pages/categorie-form/categorie-form.component').then(m => m.CategorieFormComponent),
-    data: { title: 'Nouvelle catégorie' },
+    path: 'new',
+    loadComponent: () => import('./categorie-form/categorie-form.component').then(m => m.CategorieFormComponent),
+    title: 'Nouvelle catégorie'
   },
   {
-    path: ':id/modifier',
-    loadComponent: () => import('./pages/categorie-form/categorie-form.component').then(m => m.CategorieFormComponent),
-    data: { title: 'Modifier catégorie' },
-  },
+    path: ':id/edit',
+    loadComponent: () => import('./categorie-form/categorie-form.component').then(m => m.CategorieFormComponent),
+    title: 'Modifier catégorie'
+  }
 ];

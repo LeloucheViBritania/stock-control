@@ -1,294 +1,143 @@
-/**
- * Configuration des routes principales
- * Gestion de Stock Frontend
- */
-
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
+import { premiumGuard } from './core/guards/premium.guard';
+import { roleGuard } from './core/guards/role.guard';
 
-// Guards
-import { authGuard } from '@guards/auth.guard';
-import { noAuthGuard } from '@guards/no-auth.guard';
-import { premiumGuard } from '@guards/premium.guard';
-import { roleGuard } from '@guards/role.guard';
-
-// Enums
-import { Role } from '@enums/role.enum';
-
-/**
- * Routes principales de l'application
- */
 export const routes: Routes = [
-  // ============================================
-  // REDIRECTION RACINE
-  // ============================================
-  {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
-  },
-
-  // ============================================
-  // AUTH (Public)
-  // ============================================
+  // Auth routes (public)
   {
     path: 'auth',
-    canActivate: [noAuthGuard],
-    loadChildren: () => import('@features/auth/auth.routes').then(m => m.AUTH_ROUTES),
+    loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES)
   },
 
-  // ============================================
-  // ROUTES PROTÉGÉES (Authentifiées)
-  // ============================================
+  // Main app routes (protected)
   {
     path: '',
     canActivate: [authGuard],
-    loadComponent: () => 
-      import('@components/layout/main-layout/main-layout.component').then(m => m.MainLayoutComponent),
+    loadComponent: () => import('./layouts/main-layout/main-layout.component').then(m => m.MainLayoutComponent),
     children: [
-      // ============================================
-      // DASHBOARD
-      // ============================================
+      // Dashboard
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
       {
         path: 'dashboard',
-        loadChildren: () => import('@features/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES),
-        data: { title: 'Tableau de bord' },
+        loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
+        title: 'Tableau de bord'
       },
 
-      // ============================================
-      // PRODUITS
-      // ============================================
+      // FREE Tier Features
       {
         path: 'produits',
-        loadChildren: () => import('@features/produits/produits.routes').then(m => m.PRODUITS_ROUTES),
-        data: { title: 'Produits' },
+        loadChildren: () => import('./features/produits/produits.routes').then(m => m.PRODUITS_ROUTES),
+        title: 'Produits'
       },
-
-      // ============================================
-      // CATÉGORIES
-      // ============================================
       {
         path: 'categories',
-        loadChildren: () => import('@features/categories/categories.routes').then(m => m.CATEGORIES_ROUTES),
-        data: { title: 'Catégories' },
+        loadChildren: () => import('./features/categories/categories.routes').then(m => m.CATEGORIES_ROUTES),
+        title: 'Catégories'
       },
-
-      // ============================================
-      // CLIENTS
-      // ============================================
       {
         path: 'clients',
-        loadChildren: () => import('@features/clients/clients.routes').then(m => m.CLIENTS_ROUTES),
-        data: { title: 'Clients' },
+        loadChildren: () => import('./features/clients/clients.routes').then(m => m.CLIENTS_ROUTES),
+        title: 'Clients'
       },
-
-      // ============================================
-      // FOURNISSEURS
-      // ============================================
       {
         path: 'fournisseurs',
-        loadChildren: () => import('@features/fournisseurs/fournisseurs.routes').then(m => m.FOURNISSEURS_ROUTES),
-        data: { title: 'Fournisseurs' },
+        loadChildren: () => import('./features/fournisseurs/fournisseurs.routes').then(m => m.FOURNISSEURS_ROUTES),
+        title: 'Fournisseurs'
       },
-
-      // ============================================
-      // COMMANDES
-      // ============================================
       {
         path: 'commandes',
-        loadChildren: () => import('@features/commandes/commandes.routes').then(m => m.COMMANDES_ROUTES),
-        data: { title: 'Commandes' },
+        loadChildren: () => import('./features/commandes/commandes.routes').then(m => m.COMMANDES_ROUTES),
+        title: 'Commandes'
       },
-
-      // ============================================
-      // MOUVEMENTS DE STOCK
-      // ============================================
       {
         path: 'mouvements-stock',
-        loadChildren: () => import('@features/mouvements-stock/mouvements-stock.routes').then(m => m.MOUVEMENTS_STOCK_ROUTES),
-        data: { title: 'Mouvements de stock' },
+        loadChildren: () => import('./features/mouvements-stock/mouvements-stock.routes').then(m => m.MOUVEMENTS_STOCK_ROUTES),
+        title: 'Mouvements de Stock'
       },
 
-      // ============================================
-      // ENTREPÔTS [PREMIUM]
-      // ============================================
+      // PREMIUM Features
       {
         path: 'entrepots',
+        loadChildren: () => import('./features/entrepots/entrepots.routes').then(m => m.ENTREPOTS_ROUTES),
         canActivate: [premiumGuard],
-        loadChildren: () => import('@features/entrepots/entrepots.routes').then(m => m.ENTREPOTS_ROUTES),
-        data: { 
-          title: 'Entrepôts',
-          premium: true,
-        },
+        title: 'Entrepôts'
       },
-
-      // ============================================
-      // TRANSFERTS DE STOCK [PREMIUM]
-      // ============================================
-      {
-        path: 'transferts-stock',
-        canActivate: [premiumGuard],
-        loadChildren: () => import('@features/transferts-stock/transferts-stock.routes').then(m => m.TRANSFERTS_STOCK_ROUTES),
-        data: { 
-          title: 'Transferts de stock',
-          premium: true,
-        },
-      },
-
-      // ============================================
-      // INVENTAIRE [PREMIUM]
-      // ============================================
       {
         path: 'inventaire',
+        loadChildren: () => import('./features/inventaire/inventaire.routes').then(m => m.INVENTAIRE_ROUTES),
         canActivate: [premiumGuard],
-        loadChildren: () => import('@features/inventaire/inventaire.routes').then(m => m.INVENTAIRE_ROUTES),
-        data: { 
-          title: 'Inventaire',
-          premium: true,
-        },
+        title: 'Inventaire'
       },
-
-      // ============================================
-      // RÉAPPROVISIONNEMENT
-      // ============================================
       {
-        path: 'reapprovisionnement',
-        loadChildren: () => import('@features/reapprovisionnement/reapprovisionnement.routes').then(m => m.REAPPROVISIONNEMENT_ROUTES),
-        data: { title: 'Réapprovisionnement' },
+        path: 'inventaire-physique',
+        loadChildren: () => import('./features/inventaire-physique/inventaire-physique.routes').then(m => m.INVENTAIRE_PHYSIQUE_ROUTES),
+        canActivate: [premiumGuard],
+        title: 'Inventaire Physique'
       },
-
-      // ============================================
-      // PRÉVISIONS
-      // ============================================
+      {
+        path: 'transferts',
+        loadChildren: () => import('./features/transferts-stock/transferts-stock.routes').then(m => m.TRANSFERTS_STOCK_ROUTES),
+        canActivate: [premiumGuard],
+        title: 'Transferts de Stock'
+      },
       {
         path: 'previsions',
-        loadChildren: () => import('@features/previsions/previsions.routes').then(m => m.PREVISIONS_ROUTES),
-        data: { title: 'Prévisions' },
-      },
-
-      // ============================================
-      // RAPPORTS [PREMIUM]
-      // ============================================
-      {
-        path: 'rapports',
+        loadChildren: () => import('./features/previsions/previsions.routes').then(m => m.PREVISIONS_ROUTES),
         canActivate: [premiumGuard],
-        loadChildren: () => import('@features/rapports/rapports.routes').then(m => m.RAPPORTS_ROUTES),
-        data: { 
-          title: 'Rapports',
-          premium: true,
-        },
+        title: 'Prévisions'
       },
-
-      // ============================================
-      // JOURNAL D'AUDIT [PREMIUM - ADMIN/GESTIONNAIRE]
-      // ============================================
+      {
+        path: 'reapprovisionnement',
+        loadChildren: () => import('./features/reapprovisionnement/reapprovisionnement.routes').then(m => m.REAPPROVISIONNEMENT_ROUTES),
+        canActivate: [premiumGuard],
+        title: 'Réapprovisionnement'
+      },
       {
         path: 'journal-audit',
-        canActivate: [premiumGuard, roleGuard],
-        loadChildren: () => import('@features/journal-audit/journal-audit.routes').then(m => m.JOURNAL_AUDIT_ROUTES),
-        data: { 
-          title: 'Journal d\'audit',
-          premium: true,
-          roles: [Role.ADMIN, Role.GESTIONNAIRE],
-        },
-      },
-
-      // ============================================
-      // NOTIFICATIONS
-      // ============================================
-      {
-        path: 'notifications',
-        loadChildren: () => import('@features/notifications/notifications.routes').then(m => m.NOTIFICATIONS_ROUTES),
-        data: { title: 'Notifications' },
-      },
-
-      // ============================================
-      // ALERTES STOCK [PREMIUM]
-      // ============================================
-      {
-        path: 'alertes-stock',
+        loadChildren: () => import('./features/journal-audit/journal-audit.routes').then(m => m.JOURNAL_AUDIT_ROUTES),
         canActivate: [premiumGuard],
-        loadChildren: () => import('@features/alertes-stock/alertes-stock.routes').then(m => m.ALERTES_STOCK_ROUTES),
-        data: { 
-          title: 'Alertes Stock',
-          premium: true,
-        },
+        title: 'Journal d\'Audit'
       },
-
-      // ============================================
-      // TRAÇABILITÉ DES LOTS [PREMIUM]
-      // ============================================
       {
-        path: 'lots',
+        path: 'rapports',
+        loadChildren: () => import('./features/rapports/rapports.routes').then(m => m.RAPPORTS_ROUTES),
         canActivate: [premiumGuard],
-        loadChildren: () => import('@features/lots-tracabilite/lots-tracabilite.routes').then(m => m.LOTS_TRACABILITE_ROUTES),
-        data: { 
-          title: 'Traçabilité des Lots',
-          premium: true,
-        },
+        title: 'Rapports'
       },
 
-      // ============================================
-      // INTÉGRATIONS & API [PREMIUM]
-      // ============================================
+      // Admin only
       {
-        path: 'integrations',
-        canActivate: [premiumGuard],
-        loadChildren: () => import('@features/integrations/integrations.routes').then(m => m.INTEGRATIONS_ROUTES),
-        data: { 
-          title: 'Intégrations & API',
-          premium: true,
-        },
+        path: 'utilisateurs',
+        loadChildren: () => import('./features/utilisateurs/utilisateurs.routes').then(m => m.UTILISATEURS_ROUTES),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
+        title: 'Utilisateurs'
       },
-
-      // ============================================
-      // ABONNEMENT
-      // ============================================
       {
-        path: 'abonnement',
-        loadChildren: () => import('@features/subscription/subscription.routes').then(m => m.SUBSCRIPTION_ROUTES),
-        data: { title: 'Abonnement' },
+        path: 'subscription',
+        loadChildren: () => import('./features/subscription/subscription.routes').then(m => m.SUBSCRIPTION_ROUTES),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
+        title: 'Abonnement'
       },
 
-      // ============================================
-      // PARAMÈTRES
-      // ============================================
+      // Profile
       {
-        path: 'parametres',
-        loadChildren: () => import('@features/settings/settings.routes').then(m => m.SETTINGS_ROUTES),
-        data: { title: 'Paramètres' },
-      },
-    ],
+        path: 'profil',
+        loadComponent: () => import('./features/auth/profil/profil.component').then(m => m.ProfilComponent),
+        title: 'Mon Profil'
+      }
+    ]
   },
 
-  // ============================================
-  // PAGES D'ERREUR
-  // ============================================
-  {
-    path: 'acces-refuse',
-    loadComponent: () => 
-      import('@features/errors/pages/access-denied/access-denied.component').then(m => m.AccessDeniedComponent),
-    data: { title: 'Accès refusé' },
-  },
-  {
-    path: 'premium-requis',
-    loadComponent: () => 
-      import('@features/errors/pages/premium-required/premium-required.component').then(m => m.PremiumRequiredComponent),
-    data: { title: 'Premium requis' },
-  },
-  {
-    path: 'erreur-serveur',
-    loadComponent: () => 
-      import('@features/errors/pages/server-error/server-error.component').then(m => m.ServerErrorComponent),
-    data: { title: 'Erreur serveur' },
-  },
-
-  // ============================================
-  // 404 - PAGE NON TROUVÉE
-  // ============================================
+  // Fallback
   {
     path: '**',
-    loadComponent: () => 
-      import('@features/errors/pages/not-found/not-found.component').then(m => m.NotFoundComponent),
-    data: { title: 'Page non trouvée' },
-  },
+    redirectTo: 'dashboard'
+  }
 ];

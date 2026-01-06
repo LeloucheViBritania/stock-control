@@ -1,15 +1,19 @@
 import { Routes } from '@angular/router';
-import { premiumGuard } from '@guards/premium.guard';
 
 export const TRANSFERTS_STOCK_ROUTES: Routes = [
   {
     path: '',
-    canActivate: [premiumGuard],
-    children: [
-      { path: '', loadComponent: () => import('./pages/transferts-list/transferts-list.component').then(m => m.TransfertsListComponent) },
-      { path: 'planning', loadComponent: () => import('./pages/transferts-planning/transferts-planning.component').then(m => m.TransfertsPlanningComponent) },
-      { path: 'nouveau', loadComponent: () => import('./pages/transfert-form/transfert-form.component').then(m => m.TransfertFormComponent) },
-      { path: ':id', loadComponent: () => import('./pages/transfert-detail/transfert-detail.component').then(m => m.TransfertDetailComponent) },
-    ]
+    loadComponent: () => import('./transferts-list/transferts-list.component').then(m => m.TransfertsListComponent),
+    title: 'Transferts de Stock'
+  },
+  {
+    path: 'new',
+    loadComponent: () => import('./transfert-form/transfert-form.component').then(m => m.TransfertFormComponent),
+    title: 'Nouveau transfert'
+  },
+  {
+    path: ':id',
+    loadComponent: () => import('./transfert-detail/transfert-detail.component').then(m => m.TransfertDetailComponent),
+    title: 'Détail transfert'
   }
 ];

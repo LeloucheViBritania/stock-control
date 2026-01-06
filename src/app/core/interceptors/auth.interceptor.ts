@@ -1,45 +1,23 @@
-/**
- * Intercepteur d'authentification
- * Ajoute le token JWT aux requêtes
- */
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpErrorResponse } from '@angular/common/http';
+import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
-import { AuthService } from '@services/auth.service';
-import { environment } from '@env/environment';
+import { AuthService } from '../services/auth.service';
 
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-
-  // Ne pas ajouter le token pour les routes d'auth publiques
-  const isPublicAuthRoute = req.url.includes('/auth/login') || 
-                            req.url.includes('/auth/register') || 
-                            req.url.includes('/auth/forgot-password') ||
-                            req.url.includes('/auth/reset-password');
-  const isExternalUrl = !req.url.startsWith(environment.apiUrl);
-
-  if (isPublicAuthRoute || isExternalUrl) {
-    return next(req);
-  }
-
   const token = authService.getToken();
 
-  if (token) {
-    req = addToken(req, token);
+  // Skip auth header for public endpoints
+  const publicEndpoints = ['/auth/login', '/auth/register', '/auth/forgot-password'];
+  const isPublic = publicEndpoints.some(endpoint => req.url.includes(endpoint));
+
+  if (token && !isPublic) {
+    const authReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return next(authReq);
   }
 
-  // Ne PAS intercepter les erreurs ici - laisser les services gérer leurs erreurs
-  // Le logout automatique était problématique
   return next(req);
 };
-
-/**
- * Ajoute le token à la requête
- */
-function addToken(req: HttpRequest<unknown>, token: string): HttpRequest<unknown> {
-  return req.clone({
-    setHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-}
